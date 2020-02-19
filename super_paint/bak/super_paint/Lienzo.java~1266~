@@ -1,0 +1,961 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+import java.awt.geom.*;
+import java.awt.font.*;
+import java.text.AttributedString;
+import java.awt.image.BufferedImage;
+import java.awt.event.*;
+import java.awt.font.TextAttribute;
+import java.awt.image.RescaleOp;
+import java.awt.image.LookupOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BandCombineOp;
+import java.awt.image.WritableRaster;
+
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class Lienzo extends JPanel
+{
+  // ***** Variables privadas de la clase *****
+  Ventana_imagen creador = null;
+  private Shape cosa = null;
+  private float[] patronSegmento = { 30,10,10,10 };
+  private Graphics2D g2d_lienzo, g2d_imagen;
+  private BufferedImage imagen, imagen_inicial;
+  private Point p1, punto1, punto2, p2, inicio, control1;
+  private boolean cojerpunto1 = true, cojerpunto2 = false, imagenleidadedisco, cojerpuntocontrol = false, borrar = false;
+  private GeneralPath trazo = new GeneralPath(), trazo_borrar = new GeneralPath();
+  ArrayList buffer = new ArrayList();
+  private Color fondo = Color.white;
+  int tope_buffer = 0;
+  // *******************************************
+
+  JTextArea caja_texto;
+
+  /**
+   * <p><u>Descripción</u>: Esta función comprueba si se puede rehacer una operación.</p>
+   * @return Verdadero si se puede rehacer, falso sino
+   */
+  public boolean se_puede_rehacer()
+  {
+    return tope_buffer != 0;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función rehace la última operación sobre la imagen.</p>
+   */
+  public void rehacer()
+  {
+    if( buffer.size() > 0 )
+    {
+      g2d_imagen.drawImage(imagen_inicial,0,0,this);
+
+      tope_buffer--;
+
+      for(int i = 0; i < buffer.size() - tope_buffer; i++)
+      {
+        dibujar( (objeto) buffer.get(i));
+      }
+    }
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función comprueba si se pueden deshacer cambios en el dibujo.</p>
+   * @return Verdadero si se pueden deshacer cambios o falso sino
+   */
+  public boolean se_puede_deshacer()
+  {
+    return buffer.size() != tope_buffer;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función deshace la última acción que se haya hecho en el dibujo.</p>
+   */
+  public void deshacer()
+  {
+    if( buffer.size() > 0 )
+    {
+      g2d_imagen.drawImage(imagen_inicial,0,0,this);
+
+      tope_buffer++;
+
+      for(int i = 0; i < buffer.size() - tope_buffer; i++)
+      {
+        dibujar( (objeto) buffer.get(i));
+      }
+    }
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función pinta la imagen en el lienzo.</p>
+   */
+  public void pintar_imagen()
+  {
+    g2d_lienzo.drawImage(imagen,0,0,this);
+  }
+
+  public void paint(Graphics g)
+  {
+   super.paint(g);
+   g2d_lienzo = (Graphics2D) g;
+   pintar_imagen();
+
+   g2d_lienzo.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // suaviza los bordes
+
+   if( !borrar )
+   {
+     // ***** Aplico la transparencia *****
+     AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, creador.creador.getTransparencia());
+     g2d_lienzo.setComposite(ac);
+     // ***********************************
+
+     // ***** miro el tipo de trazo y su grosor
+     switch (creador.creador.getTipoTrazo())
+     {
+       case 0: // trazo normal (línea recta)
+         g2d_lienzo.setStroke(new BasicStroke(creador.creador.getGrosor()));
+         break;
+       case 1: // trazo punteado
+         g2d_lienzo.setStroke(new BasicStroke(creador.creador.getGrosor(), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10, patronSegmento, 0));
+         break;
+       case 2: // trazo redondeado (añadido por mi :D )
+         g2d_lienzo.setStroke(new BasicStroke(creador.creador.getGrosor(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10, patronSegmento, 0));
+         /**
+          * Aquí utilizo el atributo .CAP_ROUND, este estilo hace terminar los segmentos de línea con un
+          * semicírculo cuyo radio es la mitad de la anchura de la línea.
+          */
+         break;
+     }
+
+     // ***** mira el tipo de relleno y dibuja en el lienzo, no en la imagen
+     if (cosa != null) {
+       switch (creador.creador.getTipoRelleno())
+       {
+         case 0: // sin relleno
+           g2d_lienzo.setPaint(creador.creador.getColorTrazo());
+           g2d_lienzo.draw(cosa);
+           break;
+         case 1: // relleno liso
+           g2d_lienzo.setPaint(creador.creador.getColorRelleno());
+           g2d_lienzo.fill(cosa);
+           g2d_lienzo.setPaint(creador.creador.getColorTrazo());
+           g2d_lienzo.draw(cosa);
+           break;
+         case 2: // relleno degradado vertical
+           g2d_lienzo.setPaint(new GradientPaint(0, 0, creador.creador.getDegradado1(), 0, 80, creador.creador.getDegradado2(), true));
+           g2d_lienzo.fill(cosa);
+           g2d_lienzo.setPaint(creador.creador.getColorTrazo());
+           g2d_lienzo.draw(cosa);
+           break;
+         case 3: // relleno degradado horizontal
+           g2d_lienzo.setPaint(new GradientPaint(80, 0, creador.creador.getDegradado1(), 0, 0, creador.creador.getDegradado2(), true));
+           g2d_lienzo.fill(cosa);
+           g2d_lienzo.setPaint(creador.creador.getColorTrazo());
+           g2d_lienzo.draw(cosa);
+           break;
+       }
+     }
+   }
+   else
+   {
+     AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1);
+     g2d_lienzo.setComposite(ac);
+     g2d_lienzo.setPaint( creador.creador.getColorFondo() );
+     g2d_lienzo.setStroke(new BasicStroke(creador.creador.getGrosor()));
+     g2d_lienzo.draw(trazo_borrar);
+   }
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función dado un String y una fuente con las propiedades que se quiera añade la propiedad subrayado.</p>
+   * @param textico Texto que se quiere subrayado
+   * @param fuentecica Fuente
+   * @return El texto formateado con la propiedad subrayado
+   */
+  private AttributedString subrayar(String textico, Font fuentecica)
+  {
+    AttributedString as = new AttributedString(textico);
+    as.addAttribute(TextAttribute.FONT, fuentecica);
+    as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_TWO_PIXEL);
+    return as;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función dado un String y una fuente con las propiedades que se quiera añade la propiedad tachado.</p>
+   * @param textico Texto que se quiere tachado
+   * @param fuentecica Fuente
+   * @return El texto formateado con la propiedad tachado
+   */
+  private AttributedString tachar(String textico, Font fuentecica)
+  {
+    AttributedString as = new AttributedString(textico);
+    as.addAttribute(TextAttribute.FONT, fuentecica);
+    as.addAttribute(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+    return as;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función dado un String y una fuente con las propiedades que se quiera añade la propiedad tachado y la propiedad subrayado.</p>
+   * @param textico Texto que se quiere tachado y subrayado
+   * @param fuentecica Fuente
+   * @return El texto formateado con la propiedad tachado y subrayado
+   */
+ private AttributedString subrayado_tachado(String textico, Font fuentecica)
+ {
+   AttributedString as = new AttributedString(textico);
+   as.addAttribute(TextAttribute.FONT, fuentecica);
+   as.addAttribute(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+   as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_TWO_PIXEL);
+   return as;
+ }
+
+ /**
+  * <p><u>Descripción</u>: Esta función devuelve el color de fondo del lienzo.</p>
+  * @return Color de fondo del lienzo
+  */
+ public Color getFondo()
+ {
+   return fondo;
+ }
+
+ /**
+  * <p><u>Descripción</u>: Esta función modifica el color de fondo del lienzo.</p>
+  * @param f Color para poner de fondo al lienzo
+  */
+ public void setFondo(Color f)
+ {
+   fondo = f;
+ }
+
+  /**
+   * <p><u>Descripción</u>: Esta función recibe un objeto del tipo Shape, lo dibuja y puede dibujarlo en la imagen o no.</p>
+   * @param obje Objeto que se asigna para dibujar. Puede ser una forma geométrica o texto.
+   */
+  public void dibujar(objeto obje)
+  {
+    g2d_imagen.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // suaviza los bordes
+
+    if( creador.creador.getTipoObjeto() != 0 )
+    {
+      if (obje instanceof figura) {
+        // ***** Aplico la transparencia *****
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+            ( (figura) obje).getTransparencia());
+        g2d_imagen.setComposite(ac);
+        // ***********************************
+        // ***** miro el tipo de trazo y su grosor *****
+        switch ( ( (figura) obje).getTipoTrazo()) {
+          case 0: // trazo normal (línea recta)
+            g2d_imagen.setStroke(new BasicStroke( ( (figura) obje).getTama()));
+            break;
+          case 1: // trazo punteado
+            g2d_imagen.setStroke(new BasicStroke( ( (figura) obje).getTama(),
+                                                 BasicStroke.CAP_BUTT,
+                                                 BasicStroke.JOIN_MITER, 10,
+                                                 patronSegmento, 0));
+            break;
+          case 2: // trazo redondeado (añadido por mi :D )
+            g2d_imagen.setStroke(new BasicStroke( ( (figura) obje).getTama(),
+                                                 BasicStroke.CAP_ROUND,
+                                                 BasicStroke.JOIN_MITER, 10,
+                                                 patronSegmento, 0));
+            break;
+        }
+        // *********************************************
+        // ***** miro el tipo de relleno y dibujo en la imagen, no en el lienzo *****
+        switch ( ( (figura) obje).getTipoRelleno()) {
+          case 0: // sin relleno
+            g2d_imagen.setPaint( ( (figura) obje).getColor());
+            g2d_imagen.draw( ( (figura) obje).getObjetoDibujar());
+            break;
+          case 1: // relleno liso
+            g2d_imagen.setPaint( ( (figura) obje).getColorRelleno());
+            g2d_imagen.fill( ( (figura) obje).getObjetoDibujar());
+            g2d_imagen.setPaint( ( (figura) obje).getColor());
+            g2d_imagen.draw( ( (figura) obje).getObjetoDibujar());
+            break;
+          case 2: // relleno degradado vertical
+            g2d_imagen.setPaint(new GradientPaint(0, 0,
+                                                  ( (figura) obje).getDegradado1(),
+                                                  0, 80,
+                                                  ( (figura) obje).getDegradado2(), true));
+            g2d_imagen.fill( ( (figura) obje).getObjetoDibujar());
+            g2d_imagen.setPaint( ( (figura) obje).getColor());
+            g2d_imagen.draw( ( (figura) obje).getObjetoDibujar());
+            break;
+          case 3: // relleno degradado horizontal
+            g2d_imagen.setPaint(new GradientPaint(80, 0,
+                                                  ( (figura) obje).getDegradado1(),
+                                                  0, 0,
+                                                  ( (figura) obje).getDegradado2(), true));
+            g2d_imagen.fill( ( (figura) obje).getObjetoDibujar());
+            g2d_imagen.setPaint( ( (figura) obje).getColor());
+            g2d_imagen.draw( ( (figura) obje).getObjetoDibujar());
+            break;
+        }
+        // **************************************************************************
+      }
+      else {
+        if (obje instanceof texto) {
+          // ***** Aplico la transparencia *****
+          AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.
+              SRC_OVER, ( (texto) obje).getTransparencia());
+          g2d_imagen.setComposite(ac);
+          // ***********************************
+
+          Font fuente = null;
+
+          // ***** miro el tipo de formato que tiene el texto, negrita, cursiva o normal *****
+          if (! ( (texto) obje).getNegrita() && ! ( (texto) obje).getCursiva()) {
+            fuente = new Font( ( (texto) obje).getNombreFuente(), Font.PLAIN,
+                              ( (texto) obje).getTama());
+          }
+          else {
+            if ( ( (texto) obje).getNegrita() && ! ( (texto) obje).getCursiva()) {
+              fuente = new Font( ( (texto) obje).getNombreFuente(), Font.BOLD,
+                                ( (texto) obje).getTama());
+            }
+            else {
+              if (! ( (texto) obje).getNegrita() && ( (texto) obje).getCursiva()) {
+                fuente = new Font( ( (texto) obje).getNombreFuente(),
+                                  Font.ITALIC, ( (texto) obje).getTama());
+              }
+              else {
+                fuente = new Font( ( (texto) obje).getNombreFuente(),
+                                  Font.BOLD | Font.ITALIC,
+                                  ( (texto) obje).getTama());
+              }
+            }
+          }
+          g2d_imagen.setFont(fuente);
+
+          if ( ( (texto) obje).getTipoRelleno() == 2) // hago el relleno degradado vertical también para el texto
+            g2d_imagen.setPaint(new GradientPaint(0, 0,
+                                                  ( (texto) obje).getDegradado1(),
+                                                  0, 80,
+                                                  ( (texto) obje).getDegradado2(), true));
+          else
+          if ( ( (texto) obje).getTipoRelleno() == 3) // hago el relleno degradado horizontal también para el texto
+            g2d_imagen.setPaint(new GradientPaint(80, 0,
+                                                  ( (texto) obje).getDegradado1(),
+                                                  0, 0,
+                                                  ( (texto) obje).getDegradado2(), true));
+          else
+            g2d_imagen.setPaint( ( (texto) obje).getColor());
+
+          if ( ( (texto) obje).getSubrayado() && ! ( (texto) obje).getTachado()) { // si el texto está subrayado le aplico el efecto subrayado
+            g2d_imagen.drawString(subrayar( ( (texto) obje).getTexto(), fuente).
+                                  getIterator(),
+                                  ( (texto) obje).getPuntoDibujarTexto().x,
+                                  ( (texto) obje).getPuntoDibujarTexto().y -
+                                  ( (texto) obje).getTama());
+          }
+          else {
+            if (creador.creador.tachado() && !creador.creador.subrayado()) { // si el texto está tachado le aplico el efecto tachado
+              g2d_imagen.drawString(tachar( ( (texto) obje).getTexto(), fuente).
+                                    getIterator(),
+                                    ( (texto) obje).getPuntoDibujarTexto().x,
+                                    ( (texto) obje).getPuntoDibujarTexto().y -
+                                    ( (texto) obje).getTama());
+            }
+            else {
+              if (creador.creador.tachado() && creador.creador.subrayado()) { // si el texto está tachado y subrayado le aplico los dos efectos
+                g2d_imagen.drawString(subrayado_tachado( ( (texto) obje).
+                    getTexto(), fuente).getIterator(),
+                                      ( (texto) obje).getPuntoDibujarTexto().x,
+                                      ( (texto) obje).getPuntoDibujarTexto().y -
+                                      ( (texto) obje).getTama());
+              }
+              else {
+                FontRenderContext contextoFuente = g2d_imagen.
+                    getFontRenderContext();
+                TextLayout layout = new TextLayout( ( (texto) obje).getTexto(),
+                    fuente, contextoFuente);
+                layout.draw(g2d_imagen,
+                            ( (texto) obje).getPuntoDibujarTexto().x,
+                            ( (texto) obje).getPuntoDibujarTexto().y -
+                            ( (texto) obje).getTama());
+              }
+            }
+          }
+          // *********************************************************************************
+
+        }
+        else {
+          if (obje instanceof mi_LookupOp) {
+            BufferedImage temporal = new BufferedImage(imagen.getWidth(),
+                imagen.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d_temporal = temporal.createGraphics();
+            g2d_temporal.drawImage(imagen, 0, 0, null);
+
+            LookupOp o = new LookupOp( ( (mi_LookupOp) obje).getTable(), null);
+
+            temporal = o.filter(temporal, null);
+
+            g2d_imagen.drawImage(temporal, 0, 0, this);
+          }
+          else {
+            if (obje instanceof mi_RescaleOp) {
+              System.out.println("aa");
+              BufferedImage temporal = new BufferedImage(imagen.getWidth(),
+                  imagen.getHeight(), BufferedImage.TYPE_INT_RGB);
+              Graphics2D g2d_temporal = temporal.createGraphics();
+              g2d_temporal.drawImage(imagen, 0, 0, null);
+
+              RescaleOp brillillo = new RescaleOp(1.0F,
+                                                  ( (mi_RescaleOp) obje).getBrillo(), null);
+              temporal = brillillo.filter(temporal, null);
+
+              g2d_imagen.drawImage(temporal, 0, 0, this);
+            }
+            else {
+              if (obje instanceof mi_ConvolveOp) {
+                BufferedImage temporal = new BufferedImage(imagen.getWidth(),
+                    imagen.getHeight(), BufferedImage.TYPE_INT_RGB);
+                Graphics2D g2d_temporal = temporal.createGraphics();
+                g2d_temporal.drawImage(imagen, 0, 0, null);
+
+                Kernel k = new Kernel(3, 3, ( (mi_ConvolveOp) obje).getFiltro());
+                ConvolveOp operacioncica = new ConvolveOp(k);
+                temporal = operacioncica.filter(temporal, null);
+
+                g2d_imagen.drawImage(temporal, 0, 0, this);
+              }
+              else
+              {
+                if (obje instanceof mi_AffineTransformOp)
+                {
+
+                  BufferedImage temporal = new BufferedImage(imagen.getWidth(),
+                      imagen.getHeight(), BufferedImage.TYPE_INT_RGB);
+                   Graphics2D g2d_temporal = temporal.createGraphics();
+                   g2d_temporal.drawImage(imagen, 0, 0, null);
+
+                   AffineTransformOp atop = new AffineTransformOp( ( (mi_AffineTransformOp) obje).getTransformacion(), AffineTransformOp.TYPE_BILINEAR);
+                   temporal = atop.filter(temporal, null);
+
+                   g2d_imagen.drawImage(temporal, 0, 0, this);
+                }
+                else
+                {
+                    if( obje instanceof mi_BandCombineOp )
+                    {
+                      BufferedImage temporal = new BufferedImage(imagen.getWidth(), imagen.getHeight(), BufferedImage.TYPE_INT_RGB);
+                      Graphics2D g2d_temporal = temporal.createGraphics();
+                      g2d_temporal.drawImage(imagen, 0, 0, null);
+
+                      BandCombineOp bcop = new BandCombineOp(((mi_BandCombineOp)obje).getArray(), null);
+                      WritableRaster rasterdest = bcop.filter(temporal.getRaster(), null);
+                      temporal = new BufferedImage(temporal.getColorModel(), rasterdest, false, null);
+
+                      g2d_imagen.drawImage(temporal, 0, 0, this);
+                    }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    repaint();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función me dice si la imagen se ha leído de disco o no.</p>
+   * @return Verdadero si la imagen se ha leído de disco o falso sino.
+   */
+  public boolean getLeidadedisco()
+  {
+    return imagenleidadedisco;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función modifica si la imagen se ha leído de disco.</p>
+   * @param a Verdadero si se quiere decir que la imagen se ha leído de disco o falso sino.
+   */
+  public void setLeidadedisco(boolean a)
+  {
+    imagenleidadedisco = a;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve la imagen del lienzo.</p>
+   * @return Imagen del lienzo
+   */
+  public BufferedImage getImagen()
+  {
+    return imagen;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función modifica la imagen del lienzo.</p>
+   * @param i Imagen para sustituir por la del lienzo
+   */
+  public void setImagen(BufferedImage i)
+  {
+    if( i != null )
+   {
+     imagen = i;
+     g2d_imagen = imagen.createGraphics();
+   }
+
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función borra el buffer de cambios de la imagen.</p>
+   */
+  public void borrar_buffer()
+  {
+    for(int i = 0; i < buffer.size(); i++)
+      buffer.remove(i);
+  }
+
+  public Lienzo(Ventana_imagen ima, BufferedImage imag)
+  {
+    Graphics2D g2d_imagen_inicial;
+    creador = ima;
+    if( imag != null ) // le he pasado una imagen
+    {
+      imagenleidadedisco = true;
+      imagen = imag;
+      g2d_imagen = imagen.createGraphics();
+
+      imagen_inicial = new BufferedImage(creador.getAncho(), creador.getAlto(), BufferedImage.TYPE_INT_RGB);
+      g2d_imagen_inicial = imagen_inicial.createGraphics();
+      g2d_imagen_inicial.drawImage(imag,0,0,this);
+
+    }
+    else
+    {
+      imagen = new BufferedImage(creador.getAncho(), creador.getAlto(), BufferedImage.TYPE_INT_RGB);
+      g2d_imagen = imagen.createGraphics();
+      g2d_imagen.setPaint( creador.creador.getColorFondo() );
+      g2d_imagen.fill(new Rectangle2D.Float(0, 0, creador.getAncho(), creador.getAlto()));
+
+      imagen_inicial = new BufferedImage(creador.getAncho(), creador.getAlto(), BufferedImage.TYPE_INT_RGB);
+      g2d_imagen_inicial = imagen_inicial.createGraphics();
+      g2d_imagen_inicial.setPaint( creador.creador.getColorFondo() );
+      g2d_imagen_inicial.fill(new Rectangle2D.Float(0, 0, creador.getAncho(), creador.getAlto()));
+
+
+      imagenleidadedisco = false;
+    }
+
+    try {
+      jbInit();
+    }
+    catch(Exception ex)
+    {
+      ex.printStackTrace();
+    }
+  }
+
+  void jbInit() throws Exception
+  {
+
+    // ***** Para que salgan los scroll *****
+    this.setMaximumSize( new Dimension(imagen.getWidth()+1, imagen.getHeight()+1) );
+    this.setMinimumSize( new Dimension(imagen.getWidth()-1, imagen.getHeight()-1) );
+    this.setPreferredSize( new Dimension(imagen.getWidth(), imagen.getHeight()) );
+    this.addKeyListener(new Lienzo_this_keyAdapter(this));
+    // **************************************
+    this.setLayout(null);
+    this.setBackground(SystemColor.controlLtHighlight);
+    this.addMouseMotionListener(new Lienzo_this_mouseMotionAdapter(this));
+    this.addMouseListener(new Lienzo_this_mouseAdapter(this));
+  }
+
+  void this_mouseClicked(MouseEvent e)
+  {
+    p1 = e.getPoint();
+
+    switch (creador.creador.getTipoObjeto())
+    {
+      case 12: // curva con 2 puntos de control
+      case 7: // curva con 1 punto de control
+        if( cojerpunto2 )
+        {
+          punto2 = e.getPoint();
+          cojerpunto2 = false;
+        }
+        else
+        {
+            punto1 = e.getPoint();
+            cojerpunto1 = false;
+            cojerpunto2 = true;
+        }
+
+        if( !cojerpunto1 && !cojerpunto2 )
+          cojerpuntocontrol = true;
+
+        break;
+      case 8: // texto
+        // ***** Pongo el jtextfield para poner el texto en el lienzo *****
+        Font fuente = null;
+        caja_texto = new JTextArea();
+
+        // ***** miro el tipo de formato que tiene el texto, negrita, cursiva o normal
+          if( !creador.creador.negrita() && !creador.creador.cursiva() )
+          {
+            fuente = new Font(creador.creador.getFuente(), Font.PLAIN, creador.creador.getTamaFuente());
+          }
+          else
+          {
+              if( creador.creador.negrita() && !creador.creador.cursiva() )
+              {
+                fuente = new Font(creador.creador.getFuente(), Font.BOLD, creador.creador.getTamaFuente());
+              }
+              else
+              {
+                  if( !creador.creador.negrita() && creador.creador.cursiva() )
+                  {
+                    fuente = new Font(creador.creador.getFuente(), Font.ITALIC, creador.creador.getTamaFuente());
+                  }
+                  else
+                  {
+                      fuente = new Font(creador.creador.getFuente(), Font.BOLD | Font.ITALIC, creador.creador.getTamaFuente());
+                  }
+              }
+          }
+
+        caja_texto.setLocation(p1);
+
+        caja_texto.setLineWrap(false);
+        caja_texto.setWrapStyleWord(true);
+
+        caja_texto.setForeground( creador.creador.getColorTrazo() );
+        caja_texto.setBackground( creador.creador.getColorFondo() );
+        caja_texto.setSize(new Dimension(2000, fuente.getSize()));
+        caja_texto.setFont(fuente);
+
+        caja_texto.setBorder(null);
+
+        caja_texto.setFocusable(true);
+        caja_texto.addKeyListener( new texto_actionAdapter(this, p1, fuente.getSize()) );
+        this.add(caja_texto);
+
+        caja_texto.requestFocus();
+
+        // ****************************************************************
+        break;
+      case 10: // trazo libre
+        trazo.moveTo(e.getPoint().x, e.getPoint().y);
+        trazo.lineTo(e.getPoint().x, e.getPoint().y);
+        break;
+      case 11: // goma de borrar
+        trazo_borrar.moveTo(e.getPoint().x, e.getPoint().y);
+        trazo_borrar.lineTo(e.getPoint().x, e.getPoint().y);
+        break;
+    }
+  }
+
+  void this_mouseDragged(MouseEvent e)
+  {
+    p2 = e.getPoint();
+    inicio = new Point(p1);
+
+    // compruebo cual es el punto de inicio para dibujar
+    if (p2.x < p1.x)
+      inicio.x = p2.x;
+    if (p2.y < p1.y)
+      inicio.y = p2.y;
+    // fin comprobación punto de inicio de dibujo
+
+  switch (creador.creador.getTipoObjeto())
+  {
+    case 2: // línea
+      cosa = new Line2D.Float(p1, p2);
+      break;
+    case 3: // rectángulo
+      cosa = new Rectangle2D.Float(inicio.x, inicio.y, Math.abs(p1.x - p2.x),
+                                     Math.abs(p2.y - p1.y));
+      break;
+    case 4: // rectángulo redondeado
+      cosa = new RoundRectangle2D.Float(inicio.x, inicio.y,
+                                            Math.abs(p1.x - p2.x),
+                                            Math.abs(p2.y - p1.y), 80, 40);
+      break;
+    case 5: // elipse
+      cosa = new Ellipse2D.Float(inicio.x, inicio.y, Math.abs(p1.x - p2.x), Math.abs(p2.y - p1.y));
+      break;
+    case 6: // arco
+      cosa = new Arc2D.Float(p2.x, p2.y, 100, 100, 90, 135, Arc2D.OPEN); // el arco está abierto
+      break;
+    case 7: // curva con 1 punto de control
+      if( cojerpuntocontrol )
+        cosa = new QuadCurve2D.Float(punto1.x, punto1.y, e.getPoint().x, e.getPoint().y, punto2.x, punto2.y);
+      break;
+    case 10: // trazo libre
+      trazo.lineTo(e.getPoint().x, e.getPoint().y);
+      cosa = trazo;
+      break;
+    case 11: // goma de borrar
+      trazo_borrar.lineTo(e.getPoint().x, e.getPoint().y);
+      cosa = trazo_borrar;
+      borrar = true;
+      break;
+    case 12: // curva con 2 puntos de control
+      if( cojerpuntocontrol )
+        cosa = new CubicCurve2D.Float(punto1.x, punto1.y, control1.x, control1.y, p2.x, p2.y, punto2.x, punto2.y);
+      break;
+  }
+  repaint();
+
+  creador.creador.mostrar_posicion_raton(e.getPoint().x, e.getPoint().y); // muestro las coordenadas donde se sitúa el ratón
+
+  }
+
+  void this_mousePressed(MouseEvent e)
+  {
+    p1 = new Point( e.getPoint() );
+
+    switch (creador.creador.getTipoObjeto())
+    {
+      case 10:
+        trazo = new GeneralPath();
+        trazo.moveTo(e.getX(),e.getY());
+        trazo.lineTo(e.getX(), e.getY());
+        break;
+      case 11:
+        trazo_borrar = new GeneralPath();
+        trazo_borrar.moveTo(e.getX(),e.getY());
+        trazo_borrar.lineTo(e.getX(), e.getY());
+        break;
+      case 12:
+        if (!cojerpunto1 && !cojerpunto2)
+        {
+          control1 = e.getPoint();
+          cojerpunto1 = true;
+          cojerpunto2 = true;
+        }
+        break;
+    }
+  }
+
+  void this_mouseReleased(MouseEvent e)
+  {
+    figura fig = null;
+
+    if( creador.creador.getTipoObjeto() == 1 || creador.creador.getTipoObjeto() == 9 ||
+        creador.creador.getTipoObjeto() == 10 || creador.creador.getTipoObjeto() == 11 ||
+        creador.creador.getTipoObjeto() == 7 || creador.creador.getTipoObjeto() == 8
+        || creador.creador.getTipoObjeto() == 12)
+    {
+      switch (creador.creador.getTipoObjeto())
+      {
+        case 1: // punto
+          cosa = new Line2D.Float(p1, p1);
+          fig = new figura(new atributos(cosa, creador.creador.getGrosor(),
+                                         creador.creador.getTipoRelleno(),
+                                         creador.creador.getColorTrazo(),
+                                         creador.creador.getColorRelleno(),
+                                         creador.creador.
+                                         getTransparencia(), 0, 0,
+                                         creador.creador.getFuente(), null,
+                                         creador.creador.getDegradado1(),
+                                         creador.creador.getDegradado2(),
+                                         creador.creador.getTipoTrazo(),
+                                         false, false, false, false, null));
+          break;
+        case 12: // curva con dos puntos de control
+        case 7: // curva con un punto de control
+          if( cojerpuntocontrol )
+          {
+            fig = new figura(new atributos(cosa, creador.creador.getGrosor(),
+                                           creador.creador.getTipoRelleno(),
+                                           creador.creador.getColorTrazo(),
+                                           creador.creador.getColorRelleno(),
+                                           creador.creador.
+                                           getTransparencia(), 0, 0,
+                                           creador.creador.getFuente(), null,
+                                           creador.creador.getDegradado1(),
+                                           creador.creador.getDegradado2(),
+                                           creador.creador.getTipoTrazo(),
+                                           false, false, false, false, null));
+            cojerpuntocontrol = false;
+            cojerpunto1 = true;
+            cojerpunto2 = false;
+            buffer.add(fig);
+            dibujar(fig);
+          }
+          break;
+        case 8:
+          break;
+        case 9: // estrella
+          GeneralPath estrella = new GeneralPath();
+          int puntosX[] = {
+              p1.x + 26, p1.x + 67 / 2, p1.x + 109 / 2, p1.x + 73 / 2,
+              p1.x + 83 / 2, p1.x + 55 / 2, p1.x + 27 / 2, p1.x + 37 / 2,
+              p1.x + 1 / 2, p1.x + 43 / 2};
+          int puntosY[] = {
+              p1.y, p1.y + 36 / 2, p1.y + 36 / 2, p1.y + 54 / 2, p1.y + 96 / 2,
+              p1.y + 72 / 2, p1.y + 96 / 2, p1.y + 54 / 2, p1.y + 36 / 2,
+              p1.y + 36 / 2};
+          estrella.moveTo(puntosX[0], puntosY[0]);
+          for (int i = 1; i < puntosX.length; i++)
+            estrella.lineTo(puntosX[i], puntosY[i]);
+          estrella.closePath();
+          fig = new figura(new atributos(estrella, creador.creador.getGrosor(),
+                                         creador.creador.getTipoRelleno(),
+                                         creador.creador.getColorTrazo(),
+                                         creador.creador.getColorRelleno(),
+                                         creador.creador.
+                                         getTransparencia(), 0, 0,
+                                         creador.creador.getFuente(), null,
+                                         creador.creador.getDegradado1(),
+                                         creador.creador.getDegradado2(),
+                                         creador.creador.getTipoTrazo(),
+                                         false, false, false, false, null));
+
+          break;
+        case 10: // trazo libre
+          fig = new figura(new atributos(trazo, creador.creador.getGrosor(),
+                                         creador.creador.getTipoRelleno(),
+                                         creador.creador.getColorTrazo(),
+                                         creador.creador.getColorRelleno(),
+                                         creador.creador.
+                                         getTransparencia(), 0, 0,
+                                         creador.creador.getFuente(), null,
+                                         creador.creador.getDegradado1(),
+                                         creador.creador.getDegradado2(),
+                                         creador.creador.getTipoTrazo(),
+                                         false, false, false, false, null));
+          trazo = new GeneralPath();
+          break;
+        case 11: // goma de borrar
+          fig = new figura(new atributos(trazo_borrar,
+                                         creador.creador.getGrosor(),
+                                         0,
+                                         creador.creador.getColorFondo(),
+                                         creador.creador.getColorRelleno(),
+                                         1, 0, 0,
+                                         creador.creador.getFuente(), null,
+                                         creador.creador.getDegradado1(),
+                                         creador.creador.getDegradado2(),
+                                         creador.creador.getTipoTrazo(),
+                                         false, false, false, false, null));
+          trazo_borrar = new GeneralPath();
+          borrar = false;
+          break;
+      }
+    }
+    else // para las otras figuras
+    {
+      fig = new figura(new atributos(cosa, creador.creador.getGrosor(),
+                                               creador.creador.getTipoRelleno(),
+                                               creador.creador.getColorTrazo(),
+                                               creador.creador.getColorRelleno(),
+                                               creador.creador.
+                                               getTransparencia(), 0, 0,
+                                               creador.creador.getFuente(), null,
+                                               creador.creador.getDegradado1(),
+                                               creador.creador.getDegradado2(),
+                                               creador.creador.getTipoTrazo(),
+                                               false, false, false, false, null));
+    }
+
+    // ***** Si dibujo algo después de hacer deshacer actualizo *****
+    for(int i = 0; i < tope_buffer; i++)
+    {
+      buffer.remove(buffer.size() - 1);
+    }
+    tope_buffer = 0;
+    // **************************************************************
+
+    if( creador.creador.getTipoObjeto() != 12 && creador.creador.getTipoObjeto() != 7 )
+    {
+      buffer.add(fig);
+      dibujar(fig);
+    }
+
+    cosa = null;
+  }
+
+  void this_mouseMoved(MouseEvent e)
+  {
+    creador.creador.mostrar_posicion_raton(e.getPoint().x, e.getPoint().y); // muestro las coordenadas donde se sitúa el ratón
+
+    if( creador.creador.getTipoObjeto() == 11 )
+    {
+      // ***** Me creo un cursor para la goma de borrar *****
+      Toolkit tk = Toolkit.getDefaultToolkit();
+      ImageIcon bor = new ImageIcon("iconos/goma.gif");
+      Cursor cursor_goma = tk.createCustomCursor(bor.getImage(),new Point(16,16), null);
+      setCursor(cursor_goma);
+      // ****************************************************
+    }
+    else // restauro el cursor
+    {
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
+  }
+
+  void this_mouseExited(MouseEvent e)
+  {
+    creador.creador.ocultar_posicion_raton();
+  }
+
+  void this_mouseEntered(MouseEvent e)
+  {
+    // Aquí actualizo el color de fondo para borrar por si tengo mas de una imagen abierta
+    creador.creador.setColorFondo( fondo );
+  }
+}
+
+class Lienzo_this_mouseAdapter extends java.awt.event.MouseAdapter {
+  Lienzo adaptee;
+
+  Lienzo_this_mouseAdapter(Lienzo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.this_mouseClicked(e);
+  }
+  public void mousePressed(MouseEvent e) {
+    adaptee.this_mousePressed(e);
+  }
+  public void mouseReleased(MouseEvent e) {
+    adaptee.this_mouseReleased(e);
+  }
+  public void mouseExited(MouseEvent e) {
+    adaptee.this_mouseExited(e);
+  }
+  public void mouseEntered(MouseEvent e) {
+    adaptee.this_mouseEntered(e);
+  }
+}
+
+class Lienzo_this_mouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
+  Lienzo adaptee;
+
+  Lienzo_this_mouseMotionAdapter(Lienzo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseDragged(MouseEvent e) {
+    adaptee.this_mouseDragged(e);
+  }
+  public void mouseMoved(MouseEvent e) {
+    adaptee.this_mouseMoved(e);
+  }
+}
+
+class Lienzo_this_keyAdapter extends java.awt.event.KeyAdapter {
+  Lienzo adaptee;
+
+  Lienzo_this_keyAdapter(Lienzo adaptee) {
+    this.adaptee = adaptee;
+  }
+}

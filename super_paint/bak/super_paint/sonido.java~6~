@@ -1,0 +1,50 @@
+package super_paint;
+
+import java.net.URL;
+import javax.media.Manager;
+import javax.media.NoPlayerException;
+import javax.media.Player;
+
+import javax.media.*;
+import java.io.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class sonido
+{
+  // ***** Atributos privados de la clase *****
+  Player reproductor;
+  boolean pausado = false, empezado = false, avanzarrapido = false;
+  Time pausa = null;
+  // ******************************************
+  public sonido()
+  {
+  }
+
+  public sonido(URL directorio)
+  {
+    try
+    {
+      reproductor = Manager.createPlayer(directorio);
+    }
+    catch (NoPlayerException ex)
+    {
+    }
+    catch (IOException ex)
+    {
+    }
+  }
+
+  public void reproducir()
+  {
+    reproductor.start();
+  }
+
+}

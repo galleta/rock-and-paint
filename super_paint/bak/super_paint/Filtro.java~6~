@@ -1,0 +1,86 @@
+package super_paint;
+
+import java.io.File;
+import javax.swing.filechooser.FileFilter;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class Filtro extends FileFilter
+{
+   // descripción y extensión aceptada por el filto
+   private String descripcion, extension;
+
+   public Filtro()
+   {
+     descripcion = null;
+     extension = null;
+   }
+
+   public Filtro(String desc, String ext)
+   {
+      if(desc == null || ext == null)
+      {
+         throw new NullPointerException("La descripción (o extensión) no pueden ser null.");
+      }
+      descripcion = desc;
+      extension = ext;
+   }
+
+   /**
+    *
+    * @param file File
+    * @return boolean
+    */
+   public boolean accept(File file)
+   {
+      if(file.isDirectory())
+      {
+         return true;
+      }
+      String nombreFichero = file.getName().toLowerCase();
+      return nombreFichero.endsWith(extension);
+   }
+
+   /**
+    * <p><u>Descripción</u>: Esta función modifica la descripción del filtro.</p>
+    * @param d Descripción del filtro
+    */
+   public void setDescription(String d)
+   {
+     descripcion = d;
+   }
+
+   /**
+    * <p><u>Descripción</u>: Esta función modifica la extensión del filtro.</p>
+    * @param e Extensión del filtro
+    */
+   public void setExtension(String e)
+   {
+     extension = e;
+   }
+
+   /**
+    * <p><u>Descripción</u>: Esta función devuelve la descripcion del filtro.</p>
+    * @return Descripción del filtro
+    */
+   public String getDescription()
+   {
+      return descripcion;
+   }
+
+   /**
+    * <p><u>Descripción</u>: Esta función devuelve la extensión del filtro.</p>
+    * @return Extensión del filtro
+    */
+   public String getExtension()
+   {
+     return extension;
+   }
+}

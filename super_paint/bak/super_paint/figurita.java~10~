@@ -1,0 +1,101 @@
+package super_paint;
+
+import java.awt.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class figurita
+{
+  // ***** Atributos de la clase *****
+  private Shape cosa;
+  private int grosor_linea, tipo_trazo, tipo_relleno;
+  private Color color_trazo, color_relleno;
+  // *********************************
+
+  public figurita()
+  {
+    cosa = null;
+    grosor_linea = tipo_trazo = tipo_relleno = 0;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Constructor con parámetros de la clase figurita.</p>
+   * @param c Figura
+   * @param gro Grosor de la línea de la figura
+   * @param tra Tipo de trazo de la línea: 0.- Normal, 1.- Punteado, 2.- Redondeado
+   * @param rell Tipo de relleno de la figura: 0.- Sin relleno, 1.- Relleno liso, 2.- Relleno degradado
+   * @param color_t Color del trazo de la figura
+   * @param color_r Color del relleno de la figura
+   */
+  public figurita(Shape c, int gro, int tra, int rell, Color color_t, Color color_r)
+  {
+    cosa = c;
+    grosor_linea = gro;
+    tipo_trazo = tra;
+    tipo_relleno = rell;
+    color_trazo = color_t;
+    color_relleno = color_r;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Devuelve la figura correspondiente del objeto figurita.</p>
+   * @return Devuelve la figura correspondiente
+   */
+  public Shape getCosa()
+  {
+    return cosa;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Devuelve el grosor de línea de la figura.</p>
+   * @return Grosor de línea de la figura
+   */
+  public int getGrosorLinea()
+  {
+    return grosor_linea;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Devuelve el tipo de trazo de la figura.</p>
+   * @return Tipo de trazo de la figura
+   */
+  public int getTipoTrazo()
+  {
+    return tipo_trazo;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Devuelve el tipo de relleno de la figura.</p>
+   * @return Tipo de relleno de la figura
+   */
+  public int getTipoRelleno()
+  {
+    return tipo_relleno;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Devuelve el color del trazo de la figura.</p>
+   * @return Color del trazo de la figura
+   */
+  public Color getColorTrazo()
+  {
+    return color_trazo;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Devuelve el relleno del trazo de la figura.</p>
+   * @return Color del relleno de la figura
+   */
+  public Color getColorRelleno()
+  {
+    return color_relleno;
+  }
+
+}

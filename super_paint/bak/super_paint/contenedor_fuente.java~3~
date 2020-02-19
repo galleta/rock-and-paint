@@ -1,0 +1,41 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class contenedor_fuente extends JFrame {
+  FlowLayout flowLayout1 = new FlowLayout();
+  JLabel lFuente = new JLabel();
+  JPanel jPanelColor = new JPanel();
+
+  public contenedor_fuente() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  void setFuente(String nombre_fuente, Font fuentecica)
+  {
+    lFuente.setFont( fuentecica );
+    lFuente.setText( nombre_fuente );
+  }
+
+  void jbInit() throws Exception {
+    lFuente.setText("jLabel1");
+    this.getContentPane().setLayout(flowLayout1);
+    this.getContentPane().add(lFuente, null);
+    this.getContentPane().add(jPanelColor, null);
+  }
+}

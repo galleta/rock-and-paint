@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><!--JBuilder QuickDoc-->
+<HEAD>
+<TITLE>Class super_paint.Lienzo</TITLE><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+</HEAD>
+<BODY>
+
+<H2>
+<FONT SIZE="-1">super_paint</FONT>
+<BR>Clase Lienzo</H2>
+<DL>
+<DT>public class <B>Lienzo</B><DT>extends JPanel
+</DL>
+<DL><DD><p>Título: Práctica de Sistemas Multimedia</p> <p>Descripción: Práctica de Sistemas Multimedia</p> <p>Copyright: Copyright (c) 2009</p> <p>Empresa: Piratas Sin Fronteras S.A.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Version:</B><DD>1.0</DD>
+<DT><B>Author:</B><DD>Francisco Jesús Delgado Almirón</DD>
+</DL>
+<TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<TR BGCOLOR="#CCCCFF"><TD COLSPAN=1><FONT SIZE="+2">
+<B>Detalle del método</B>
+</FONT></TD></TR></TABLE>
+
+<H3>se_puede_rehacer</H3>
+<PRE>
+public boolean <B>se_puede_rehacer</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta comprueba si se puede rehacer una operación.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Returns:</B><DD>Verdadero si se puede rehacer, falso sino</DD>
+</DL>
+<HR>
+
+<H3>rehacer</H3>
+<PRE>
+public void <B>rehacer</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función rehace la última operación sobre la imagen.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<H3>se_puede_deshacer</H3>
+<PRE>
+public boolean <B>se_puede_deshacer</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función comprueba si se pueden deshacer cambios en el dibujo.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Returns:</B><DD>Verdadero si se pueden deshacer cambios o falso sino</DD>
+</DL>
+<HR>
+
+<H3>deshacer</H3>
+<PRE>
+public void <B>deshacer</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función deshace la última acción que se haya hecho en el dibujo.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<H3>pintar_imagen</H3>
+<PRE>
+public void <B>pintar_imagen</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función pinta la imagen en el lienzo.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<H3>subrayar</H3>
+<PRE>
+private AttributedString <B>subrayar</B>(String&nbsp;textico,
+                                  Font&nbsp;fuentecica)</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función dado un String y una fuente con las propiedades que se quiera añade la propiedad subrayado.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>textico</CODE> - Texto que se quiere subrayado</DD>
+<DD><CODE>fuentecica</CODE> - Fuente</DD>
+<DT><B>Returns:</B><DD>El texto formateado con la propiedad subrayado</DD>
+</DL>
+<HR>
+
+<H3>tachar</H3>
+<PRE>
+private AttributedString <B>tachar</B>(String&nbsp;textico,
+                                Font&nbsp;fuentecica)</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función dado un String y una fuente con las propiedades que se quiera añade la propiedad tachado.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>textico</CODE> - Texto que se quiere tachado</DD>
+<DD><CODE>fuentecica</CODE> - Fuente</DD>
+<DT><B>Returns:</B><DD>El texto formateado con la propiedad tachado</DD>
+</DL>
+<HR>
+
+<H3>subrayado_tachado</H3>
+<PRE>
+private AttributedString <B>subrayado_tachado</B>(String&nbsp;textico,
+                                           Font&nbsp;fuentecica)</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función dado un String y una fuente con las propiedades que se quiera añade la propiedad tachado y la propiedad subrayado.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>textico</CODE> - Texto que se quiere tachado y subrayado</DD>
+<DD><CODE>fuentecica</CODE> - Fuente</DD>
+<DT><B>Returns:</B><DD>El texto formateado con la propiedad tachado y subrayado</DD>
+</DL>
+<HR>
+
+<H3>getFondo</H3>
+<PRE>
+public Color <B>getFondo</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función devuelve el color de fondo del lienzo.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Returns:</B><DD>Color de fondo del lienzo</DD>
+</DL>
+<HR>
+
+<H3>setFondo</H3>
+<PRE>
+public void <B>setFondo</B>(Color&nbsp;f)</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función modifica el color de fondo del lienzo.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>f</CODE> - Color para poner de fondo al lienzo</DD>
+</DL>
+<HR>
+
+<H3>dibujar</H3>
+<PRE>
+public void <B>dibujar</B>(objeto&nbsp;obje)</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función recibe un objeto del tipo Shape, lo dibuja y puede dibujarlo en la imagen o no.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>obje</CODE> - Objeto que se asigna para dibujar. Puede ser una forma geométrica o texto.</DD>
+</DL>
+<HR>
+
+<H3>getLeidadedisco</H3>
+<PRE>
+public boolean <B>getLeidadedisco</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función me dice si la imagen se ha leído de disco o no.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Returns:</B><DD>Verdadero si la imagen se ha leído de disco o falso sino.</DD>
+</DL>
+<HR>
+
+<H3>setLeidadedisco</H3>
+<PRE>
+public void <B>setLeidadedisco</B>(boolean&nbsp;a)</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función modifica si la imagen se ha leído de disco.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>a</CODE> - Verdadero si se quiere decir que la imagen se ha leído de disco o falso sino.</DD>
+</DL>
+<HR>
+
+<H3>getImagen</H3>
+<PRE>
+public BufferedImage <B>getImagen</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función devuelve la imagen del lienzo.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Returns:</B><DD>Imagen del lienzo</DD>
+</DL>
+<HR>
+
+<H3>setImagen</H3>
+<PRE>
+public void <B>setImagen</B>(BufferedImage&nbsp;i)</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función modifica la imagen del lienzo.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>i</CODE> - Imagen para sustituir por la del lienzo</DD>
+</DL>
+<HR>
+
+<H3>borrar_buffer</H3>
+<PRE>
+public void <B>borrar_buffer</B>()</PRE>
+<DL><DD><p><u>Descripción</u>: Esta función borra el buffer de cambios de la imagen.</p><DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+</BODY>
+</HTML>

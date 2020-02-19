@@ -1,0 +1,52 @@
+package super_paint;
+
+import java.awt.Color;
+import java.awt.geom.AffineTransform;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class mi_AffineTransformOp extends objeto
+{
+  private AffineTransform transfor;
+
+  public mi_AffineTransformOp()
+  {
+  }
+
+  public mi_AffineTransformOp(AffineTransform at)
+  {
+    transfor = at;
+  }
+
+  public AffineTransform getTransformacion()
+  {
+    return transfor;
+  }
+
+  /**
+   * getColor
+   *
+   * @return Color
+   */
+  public Color getColor()
+  {
+    return null;
+  }
+
+  /**
+   * getTama
+   *
+   * @return int
+   */
+  public int getTama() {
+    return 0;
+  }
+
+}

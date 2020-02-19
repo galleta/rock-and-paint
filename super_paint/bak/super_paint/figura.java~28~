@@ -1,0 +1,95 @@
+package super_paint;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class figura extends objeto
+{
+  //private atributos atrib;
+
+  public figura(atributos a)
+  {
+    atrib = a;
+  }
+
+  public figura()
+  {
+  }
+
+  /**
+   * pintar
+   *
+   * @param imagen BufferedImage
+   */
+  public void pintar(BufferedImage imagen)
+  {
+    Graphics2D g2d = (Graphics2D)imagen.getGraphics();
+
+    g2d.draw( atrib.forma );
+
+  }
+
+  /**
+   * getTama
+   */
+  public int getTama()
+  {
+    return atrib.getGrosorLinea();
+  }
+
+  public Shape getObjetoDibujar()
+  {
+    return atrib.getForma();
+  }
+
+  public float getTransparencia()
+  {
+    return atrib.getTransparencia();
+  }
+
+  public int getTipoTrazo()
+  {
+    return atrib.getTipoTrazo();
+  }
+
+  /**
+   * getColor
+   *
+   * @return Color
+   */
+  public Color getColor()
+  {
+    return atrib.getColorTrazo();
+  }
+
+  public int getTipoRelleno()
+  {
+    return atrib.getTipoRelleno();
+  }
+
+  public Color getColorRelleno()
+  {
+    return atrib.getColorRelleno();
+  }
+
+  public Color getDegradado1()
+  {
+    return atrib.getDegradado1();
+  }
+
+  public Color getDegradado2()
+  {
+    return atrib.getDegradado2();
+  }
+
+}

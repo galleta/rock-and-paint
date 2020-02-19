@@ -1,0 +1,113 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class ventana_brillo extends JInternalFrame
+{
+  private BufferedImage original = null, imgSource, imgdest;
+
+  Ventana_imagen v;
+  BorderLayout borderLayout1 = new BorderLayout();
+  JPanel panelOpciones = new JPanel();
+  Lienzo lienzo;
+  JLabel jLabel1 = new JLabel();
+  JSlider sliderBrillo = new JSlider();
+  JCheckBox cbPrevisualizar = new JCheckBox();
+  JPanel jPanel1 = new JPanel();
+  BorderLayout borderLayout2 = new BorderLayout();
+  JPanel jPanel2 = new JPanel();
+  JButton bAceptar = new JButton();
+  BorderLayout borderLayout3 = new BorderLayout();
+
+  public ventana_brillo(Ventana_imagen ventana)
+  {
+    try
+    {
+      v = ventana;
+      jbInit();
+    }
+    catch(Exception ex)
+    {
+      ex.printStackTrace();
+    }
+  }
+
+  void jbInit() throws Exception
+  {
+    lienzo = new Lienzo(v, v.jPanelDibujar.getImagen());
+    original = v.jPanelDibujar.getImagen();
+
+    this.setClosable(true);
+    this.setIconifiable(true);
+    this.setMaximizable(true);
+
+    sliderBrillo.setValue(0);
+    sliderBrillo.addMouseMotionListener(new ventana_brillo_sliderBrillo_mouseMotionAdapter(this));
+    sliderBrillo.setMaximum(255);
+    sliderBrillo.setMinimum(-255);
+
+    this.setTitle("Cambiar brillo a: " + v.getTitle().substring(0, v.getTitle().length()-15));
+    this.getContentPane().setLayout(borderLayout1);
+    panelOpciones.setBorder(BorderFactory.createEtchedBorder());
+    panelOpciones.setLayout(borderLayout2);
+    jLabel1.setText("Brillo: 0");
+    cbPrevisualizar.setSelected(true);
+    cbPrevisualizar.setText("Prev.");
+    bAceptar.setText("Aceptar");
+    jPanel2.setLayout(borderLayout3);
+    this.getContentPane().add(panelOpciones,  BorderLayout.NORTH);
+    panelOpciones.add(jPanel1,  BorderLayout.WEST);
+    jPanel1.add(sliderBrillo, null);
+    jPanel1.add(jLabel1, null);
+    panelOpciones.add(cbPrevisualizar,  BorderLayout.EAST);
+    panelOpciones.add(jPanel2,  BorderLayout.CENTER);
+    jPanel2.add(bAceptar,  BorderLayout.EAST);
+    this.getContentPane().add(lienzo,  BorderLayout.CENTER);
+  }
+
+  void sliderBrillo_mouseDragged(MouseEvent e)
+  {
+    jLabel1.setText("Brillo: " + sliderBrillo.getValue());
+
+    if (original.getType() != BufferedImage.TYPE_INT_RGB)
+    {
+        imgSource = new BufferedImage(original.getWidth(),original.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imgSource.createGraphics();
+        g2d.drawImage(original, 0, 0, null);
+    }
+    else
+      imgSource = original;
+
+    RescaleOp rop = new RescaleOp(1.0F, sliderBrillo.getValue(), null);
+    imgdest = rop.filter(imgSource, null);
+
+    lienzo.setImagen( imgdest );
+
+    if( cbPrevisualizar.isSelected())
+      lienzo.repaint();
+  }
+}
+
+class ventana_brillo_sliderBrillo_mouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
+  ventana_brillo adaptee;
+
+  ventana_brillo_sliderBrillo_mouseMotionAdapter(ventana_brillo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseDragged(MouseEvent e) {
+    adaptee.sliderBrillo_mouseDragged(e);
+  }
+}

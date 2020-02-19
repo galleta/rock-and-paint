@@ -1,0 +1,88 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class Acerca_de extends JFrame
+{
+  FlowLayout flowLayout1 = new FlowLayout();
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JLabel jLabel3 = new JLabel();
+  JLabel jLabel4 = new JLabel();
+  JLabel jLabel5 = new JLabel();
+  JLabel jLabel6 = new JLabel();
+  JLabel jLabel7 = new JLabel();
+  JLabel jLabel8 = new JLabel();
+  JButton bAceptar = new JButton();
+  Interfaz creador;
+
+  public Acerca_de(Interfaz inter)
+  {
+    creador = inter;
+    try
+    {
+      jbInit();
+    }
+    catch(Exception ex)
+    {
+      ex.printStackTrace();
+    }
+  }
+
+  void jbInit() throws Exception
+  {
+    this.setTitle("Acerca de Super-Paint");
+    this.setResizable(false); // deshabilito la opción de maximizar
+    setDefaultCloseOperation(0); // deshabilito la opción de cerrar
+    jLabel1.setFont(new java.awt.Font("Dialog", 1, 11));
+    jLabel1.setToolTipText("");
+    jLabel1.setText("Alumno: ");
+    this.getContentPane().setLayout(flowLayout1);
+    jLabel2.setText("Francisco Jesús Delgado Almirón");
+    jLabel3.setFont(new java.awt.Font("Dialog", 1, 11));
+    jLabel3.setText("DNI:");
+    jLabel4.setText("14630694-A");
+    jLabel5.setText("Sistemas Multimedia 2.009 / 2.010");
+    jLabel6.setText("Todos los derechos e izquierdos bien puestos.");
+    jLabel7.setText("Cualquier parecido con el Paint o con el");
+    jLabel8.setText("Photoshop, es producto de tu imaginación. :D");
+    bAceptar.setText("Aceptar");
+    bAceptar.addMouseListener(new Acerca_de_bAceptar_mouseAdapter(this));
+    this.getContentPane().add(jLabel1, null);
+    this.getContentPane().add(jLabel2, null);
+    this.getContentPane().add(jLabel3, null);
+    this.getContentPane().add(jLabel4, null);
+    this.getContentPane().add(jLabel5, null);
+    this.getContentPane().add(jLabel6, null);
+    this.getContentPane().add(jLabel7, null);
+    this.getContentPane().add(jLabel8, null);
+    this.getContentPane().add(bAceptar, null);
+  }
+
+  void bAceptar_mouseClicked(MouseEvent e)
+  {
+    dispose();
+  }
+}
+
+class Acerca_de_bAceptar_mouseAdapter extends java.awt.event.MouseAdapter {
+  Acerca_de adaptee;
+
+  Acerca_de_bAceptar_mouseAdapter(Acerca_de adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.bAceptar_mouseClicked(e);
+  }
+}

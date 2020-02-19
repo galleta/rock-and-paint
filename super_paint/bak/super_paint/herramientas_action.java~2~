@@ -1,0 +1,32 @@
+package super_paint;
+
+import java.awt.event.ActionEvent;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class herramientas_action implements java.awt.event.ActionListener{
+
+  private Interfaz creador;
+
+  public herramientas_action(Interfaz i)
+  {
+    creador = i;
+  }
+
+  /**
+   * actionPerformed
+   *
+   * @param e ActionEvent
+   */
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("Hola");
+  }
+
+}

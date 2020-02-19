@@ -1,0 +1,1738 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.border.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+
+public class Ventana_atributos_dibujo extends JInternalFrame
+{
+  JComboBox cTipoTrazo = new JComboBox();
+  JLabel lGrosor = new JLabel();
+  JSlider sTamaFuente = new JSlider();
+  JComboBox cRelleno = new JComboBox();
+  JSlider sGrosor = new JSlider();
+  BorderLayout borderLayout8 = new BorderLayout();
+  JLabel lRelleno = new JLabel();
+  GridLayout gridLayout2 = new GridLayout(4,1);
+  JPanel jPanelContenedor = new JPanel();
+  JLabel lTipoTrazo = new JLabel();
+  FlowLayout flowLayout1 = new FlowLayout();
+  JPanel jPanelAtributos = new JPanel();
+  JLabel lTamaFuente = new JLabel();
+  JPanel jPanelFormas = new JPanel();
+  JPanel jPanelFormasAtributos = new JPanel();
+  JLabel lFuente = new JLabel();
+  JComboBox cFuentes = new JComboBox();
+  BorderLayout borderLayout9 = new BorderLayout();
+  GridLayout gridLayout1 = new GridLayout();
+  JPanel jPanelColor = new JPanel();
+  JLabel jLabel1 = new JLabel();
+  BorderLayout borderLayout1 = new BorderLayout();
+  JPanel jPanelElegirColores = new JPanel();
+  GridLayout gridLayout3 = new GridLayout(2,2);
+  JPanel jPanelNegroRelleno = new JPanel();
+  JPanel jPanelNaranjaRelleno = new JPanel();
+  JPanel jPanelRosaRelleno = new JPanel();
+  JPanel jPanelAzulRelleno = new JPanel();
+  JPanel jPanelVerdeRelleno = new JPanel();
+  JPanel jPanelAmarilloRelleno = new JPanel();
+  JPanel jPanelRojoRelleno = new JPanel();
+  JPanel jPanelBlancoRelleno = new JPanel();
+  JPanel jPanelMarronRelleno = new JPanel();
+  JPanel jPanelVioletaRelleno = new JPanel();
+  JPanel jPanelAzulClaroRelleno = new JPanel();
+  JPanel jPanelLimaRelleno = new JPanel();
+  JPanel jPanelBeigeRelleno = new JPanel();
+  JPanel jPanelGrisClaroRelleno = new JPanel();
+  JPanel jPanelColorTrazo = new JPanel();
+  BorderLayout borderLayout2 = new BorderLayout();
+  JLabel jLabel2 = new JLabel();
+  JPanel jPanelElegirColoresTrazo = new JPanel();
+  GridLayout gridLayout4 = new GridLayout(2,2);
+  JPanel jPanelNegroTrazo = new JPanel();
+  JPanel jPanelNaranjaTrazo = new JPanel();
+  JPanel jPanelRosaTrazo = new JPanel();
+  JPanel jPanelAzulTrazo = new JPanel();
+  JPanel jPanelVerdeTrazo = new JPanel();
+  JPanel jPanelAmarilloTrazo = new JPanel();
+  JPanel jPanelRojoTrazo = new JPanel();
+  JPanel jPanelBlancoTrazo = new JPanel();
+  JPanel jPanelMarronTrazo = new JPanel();
+  JPanel jPanelVioletaTrazo = new JPanel();
+  JPanel jPanelAzulClaroTrazo = new JPanel();
+  JPanel jPanelLimaTrazo = new JPanel();
+  JPanel jPanelBeigeTrazo = new JPanel();
+  JPanel jPanelGrisClaroTrazo = new JPanel();
+  JPanel jPanelColorRelleno = new JPanel();
+  BorderLayout borderLayout3 = new BorderLayout();
+  JPanel jPanelColoresActuales = new JPanel();
+  JPanel jPanel1 = new JPanel();
+  BorderLayout borderLayout4 = new BorderLayout();
+  JLabel jLabel3 = new JLabel();
+  JLabel jLabel4 = new JLabel();
+  FlowLayout flowLayout2 = new FlowLayout();
+  JPanel jPanelMostrarColorActualRelleno = new JPanel();
+  JLabel jLabel5 = new JLabel();
+  JPanel jPanelMostrarColorActualTrazo = new JPanel();
+  Interfaz creador = null;
+
+  // ***** Variables privadas de la clase *****
+  private Color trazo_personalizado, relleno_personalizado, negro, rojo, azul, blanco, amarillo, gris, verde, rosa, marron, naranja, azul_claro, beige, lima, violeta, color_actual_relleno, color_actual_trazo;
+  private ButtonGroup grupo = new ButtonGroup ();
+  // ******************************************
+
+//Modificado para poder salir cuando se cierra la ventana
+  protected void processWindowEvent(WindowEvent e)
+  {
+    //super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING)
+    {
+      creador.mostrar_infor("cerrada la ventana de herramientas");
+      /*int i = JOptionPane.showConfirmDialog(this, "¿Cerrar Super-Paint?", "Salir", JOptionPane.YES_NO_OPTION);
+      if( i == 0 )
+      {
+        System.exit(0);
+      }
+      else
+        this.setVisible(true);*/
+    }
+  }
+
+  public Ventana_atributos_dibujo(Interfaz inter)
+  {
+    creador = inter;
+    try
+    {
+      jbInit();
+    }
+    catch(Exception ex)
+    {
+      ex.printStackTrace();
+    }
+  }
+
+  void sGrosor_mouseDragged(MouseEvent e)
+  {
+    lGrosor.setText("Grosor de línea: " + sGrosor.getValue());
+    creador.setGrosor(sGrosor.getValue());
+  }
+
+  void sTamaFuente_mouseDragged(MouseEvent e)
+  {
+    lTamaFuente.setText("Tamaño fuente: " + sTamaFuente.getValue());
+    creador.setTamaFuente(sTamaFuente.getValue());
+  }
+
+  public Ventana_atributos_dibujo() {
+    try
+    {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void jbInit() throws Exception
+  {
+    this.setTitle("Herramientas");
+    this.setClosable(true);
+    this.setIconifiable(true);
+    // ***** Pongo los iconos *****
+    ImageIcon circulo = new ImageIcon("iconos/circulo.gif");
+    ImageIcon linea = new ImageIcon("iconos/linea.gif");
+    ImageIcon rectangulo = new ImageIcon("iconos/rectangulo.gif");
+    ImageIcon arco = new ImageIcon("iconos/arco.gif");
+    ImageIcon trazolibre = new ImageIcon("iconos/trazo_libre.gif");
+    ImageIcon texto = new ImageIcon("iconos/texto.gif");
+    ImageIcon rectanguloredondeado = new ImageIcon("iconos/rectangulo_redondeado.gif");
+    ImageIcon punto = new ImageIcon("iconos/punto.gif");
+    ImageIcon estrella = new ImageIcon("iconos/estrella.gif");
+    ImageIcon cpc = new ImageIcon("iconos/cpc.gif");
+    ImageIcon goma = new ImageIcon("iconos/goma.gif");
+    tbBotonElipse.setIcon(circulo);
+    tbBotonLinea.setIcon(linea);
+    tbBotonRectangulo.setIcon(rectangulo);
+    tbBotonArco.setIcon(arco);
+    tbBotonTrazoLibre.setIcon(trazolibre);
+    tbBotonTexto.setIcon(texto);
+    tbBotonRectanguloRedondeado.setIcon(rectanguloredondeado);
+    tbBotonPunto.setIcon(punto);
+    tbBotonEstrella.setIcon(estrella);
+    tbBotonCPC.setIcon(cpc);
+    tbBotonGoma.setToolTipText("Goma de borrar");
+    tbBotonGoma.setIcon(goma);
+    tbBotonGoma.addMouseListener(new Ventana_atributos_dibujo_tbBotonGoma_mouseAdapter(this));
+
+    ImageIcon negrita = new ImageIcon("iconos/negrita.gif");
+    ImageIcon cursiva = new ImageIcon("iconos/cursiva.gif");
+    ImageIcon subrayado = new ImageIcon("iconos/subrayado.gif");
+
+    // ****************************
+
+    // ***** Cargo la lista de fuentes instaladas en el equipo *****
+    GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    String[] fuentes = env.getAvailableFontFamilyNames();
+    for(int i = 0; i < fuentes.length; i++)
+      cFuentes.addItem(fuentes[i]);
+
+    creador.setFuente( (String) cFuentes.getSelectedItem() ); // pongo la fuente inicial
+    // *************************************************************
+
+    // ***** Agrupo los botones *****
+    lNegrita.setIcon(negrita);
+    cbCursiva.addMouseListener(new Ventana_atributos_dibujo_cbCursiva_mouseAdapter(this));
+    cbCursiva.addMouseListener(new Ventana_atributos_dibujo_cbCursiva_mouseAdapter(this));
+    lCursiva.setIcon(cursiva);
+    jPanelAtributosTexto.setLayout(borderLayout10);
+    cbNegrita.addMouseListener(new Ventana_atributos_dibujo_cbNegrita_mouseAdapter(this));
+    cbNegrita.addMouseListener(new Ventana_atributos_dibujo_cbNegrita_mouseAdapter(this));
+    lSubrayado.setIcon(subrayado);
+    cbSubrayado.addMouseListener(new Ventana_atributos_dibujo_cbSubrayado_mouseAdapter(this));
+    cbSubrayado.addMouseListener(new Ventana_atributos_dibujo_cbSubrayado_mouseAdapter(this));
+    cbNegrita.setToolTipText("Negrita");
+    cbCursiva.setToolTipText("Cursiva");
+    cbSubrayado.setToolTipText("Subrayado");
+    jPanelElegirTrazoPersonalizado.setLayout(borderLayout5);
+    jLabel7.setText("Elegir Trazo");
+    jPanelTrazoPersonalizado.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelTrazoPersonalizado.setLayout(flowLayout4);
+    jPanelTrazoPersonalizado.addMouseListener(new Ventana_atributos_dibujo_jPanelTrazoPersonalizado_mouseAdapter(this));
+    jLabel8.setText("Elegir relleno:");
+    jPanelRellenoPersonalizado.setLayout(borderLayout6);
+    jPanelElegirRellenoPersonalizado.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelElegirRellenoPersonalizado.addMouseListener(new Ventana_atributos_dibujo_jPanelElegirRellenoPersonalizado_mouseAdapter(this));
+    grupo.add(tbBotonPunto);
+    grupo.add(tbBotonLinea);
+    grupo.add(tbBotonRectangulo);
+    grupo.add(tbBotonElipse);
+    grupo.add(tbBotonRectanguloRedondeado);
+    grupo.add(tbBotonArco);
+    grupo.add(tbBotonCPC);
+    grupo.add(tbBotonTexto);
+    grupo.add(tbBotonEstrella);
+    grupo.add(tbBotonTrazoLibre);
+    grupo.add(tbBotonGoma);
+    // ******************************
+
+    // ***** Le doy su valor a los colores *****
+    negro = Color.black;
+    rojo = Color.red;
+    azul = Color.blue;
+    blanco = Color.white;
+    amarillo = Color.yellow;
+    gris = Color.gray;
+    verde = Color.green;
+    rosa = Color.pink;
+    marron = new Color(165,42,42);
+    naranja = Color.orange;
+    azul_claro = new Color(176,224,230);
+    beige = new Color(245,245,220);
+    lima = new Color(32,205,32);
+    violeta = new Color(221,160,221);
+    color_actual_trazo = negro;
+    color_actual_relleno = blanco;
+    // ******************************************
+
+    // ***** Pongo los colores en sus respectivos paneles *****
+    jPanelNegroRelleno.setBackground(negro);
+    jPanelNegroTrazo.setBackground(negro);
+    jPanelGrisClaroRelleno.setBackground(gris);
+    jPanelGrisClaroTrazo.setBackground(gris);
+    jPanelBlancoRelleno.setBackground(blanco);
+    jPanelBlancoTrazo.setBackground(blanco);
+    jPanelRojoRelleno.setBackground(rojo);
+    jPanelRojoTrazo.setBackground(rojo);
+    jPanelAmarilloRelleno.setBackground(amarillo);
+    jPanelAmarilloTrazo.setBackground(amarillo);
+    jPanelVerdeRelleno.setBackground(verde);
+    jPanelVerdeTrazo.setBackground(verde);
+    jPanelAzulRelleno.setBackground(azul);
+    jPanelAzulTrazo.setBackground(azul);
+    jPanelRosaRelleno.setBackground(rosa);
+    jPanelRosaTrazo.setBackground(rosa);
+    jPanelNaranjaRelleno.setBackground(naranja);
+    jPanelNaranjaTrazo.setBackground(naranja);
+    jPanelMarronRelleno.setBackground(marron);
+    jPanelMarronTrazo.setBackground(marron);
+    jPanelAzulClaroRelleno.setBackground(azul_claro);
+    jPanelAzulClaroTrazo.setBackground(azul_claro);
+    jPanelBeigeRelleno.setBackground(beige);
+    jPanelBeigeTrazo.setBackground(beige);
+    jPanelLimaRelleno.setBackground(lima);
+    jPanelLimaTrazo.setBackground(lima);
+    jPanelVioletaRelleno.setBackground(violeta);
+    jPanelVioletaTrazo.setBackground(violeta);
+    jPanelMostrarColorActualRelleno.setBackground(color_actual_relleno);
+    jPanelMostrarColorActualRelleno.setToolTipText("Color actual de relleno");
+    jPanelMostrarColorActualTrazo.setBackground(color_actual_trazo);
+    jPanelMostrarColorActualTrazo.setToolTipText("Color actual de trazo");
+    // ***********************************************************
+
+
+    this.setResizable(false); // deshabilito la opción de maximizar
+    setDefaultCloseOperation(0); // deshabilito la opción de cerrar
+    jPanelContenedor.setLayout(borderLayout9);
+    lRelleno.setText("Tipo de relleno:");
+    sGrosor.setToolTipText("");
+    sGrosor.setPreferredSize(new Dimension(90, 24));
+    sGrosor.setMaximumSize(new Dimension(90, 24));
+    sGrosor.setBorder(BorderFactory.createRaisedBevelBorder());
+    sGrosor.setMajorTickSpacing(1);
+    sGrosor.setMaximum(10);
+    sGrosor.setMinimum(1);
+    sGrosor.setValue(3);
+    sGrosor.addMouseMotionListener(new Ventana_atributos_dibujo_sGrosor_mouseMotionAdapter(this));
+    sTamaFuente.setValue(12);
+    sTamaFuente.addMouseMotionListener(new Ventana_atributos_dibujo_sTamaFuente_mouseMotionAdapter(this));
+    sTamaFuente.setPreferredSize(new Dimension(90, 24));
+    sTamaFuente.setMaximumSize(new Dimension(90, 24));
+    sTamaFuente.setMaximum(70);
+    lGrosor.setText("Grosor de línea: 3");
+    this.getContentPane().setLayout(gridLayout1);
+    cTipoTrazo.addItem("Continuo");
+    cTipoTrazo.addItem("Punteado");
+    cTipoTrazo.addItem("Redondeado");
+    cRelleno.addItem("Sin relleno");
+    cRelleno.addItem("Liso");
+    cRelleno.addItem("Degradado");
+    lTipoTrazo.setText("Tipo de trazo:");
+    jPanelAtributos.setLayout(flowLayout1);
+    jPanelAtributos.setBorder(BorderFactory.createLoweredBevelBorder());
+    lTamaFuente.setText("Tamaño fuente: 12");
+    jPanelFormas.setLayout(gridLayout2);
+    jPanelFormas.setBorder(BorderFactory.createLoweredBevelBorder());
+    jPanelFormasAtributos.setLayout(borderLayout8);
+    jPanelFormasAtributos.setBorder(BorderFactory.createEtchedBorder());
+    jPanelFormasAtributos.setMaximumSize(new Dimension(100, 100));
+    jPanelFormasAtributos.setMinimumSize(new Dimension(142, 153));
+    jPanelFormasAtributos.setPreferredSize(new Dimension(100, 100));
+    lFuente.setText("Tipo de fuente:");
+    jPanelColor.setBorder(BorderFactory.createLoweredBevelBorder());
+    jPanelColor.setLayout(borderLayout1);
+    cTipoTrazo.setPreferredSize(new Dimension(100, 19));
+    cRelleno.setPreferredSize(new Dimension(100, 19));
+    cFuentes.setPreferredSize(new Dimension(100, 19));
+    jLabel1.setText("Color del relleno:");
+    jPanelElegirColores.setLayout(gridLayout3);
+    jPanelNegroRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelNegroRelleno.setToolTipText("Negro");
+    jPanelNegroRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelNegroRelleno_mouseAdapter(this));
+    jPanelBlancoRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelBlancoRelleno.setToolTipText("Blanco");
+    jPanelBlancoRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelBlancoRelleno_mouseAdapter(this));
+    jPanelRojoRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelRojoRelleno.setToolTipText("Rojo");
+    jPanelRojoRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelRojoRelleno_mouseAdapter(this));
+    jPanelAmarilloRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelAmarilloRelleno.setToolTipText("Amarillo");
+    jPanelAmarilloRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelAmarilloRelleno_mouseAdapter(this));
+    jPanelVerdeRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelVerdeRelleno.setToolTipText("Verde");
+    jPanelVerdeRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelVerdeRelleno_mouseAdapter(this));
+    jPanelAzulRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelAzulRelleno.setDebugGraphicsOptions(0);
+    jPanelAzulRelleno.setToolTipText("Azul");
+    jPanelAzulRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelAzulRelleno_mouseAdapter(this));
+    jPanelRosaRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelRosaRelleno.setToolTipText("Rosa");
+    jPanelRosaRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelRosaRelleno_mouseAdapter(this));
+    jPanelNaranjaRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelNaranjaRelleno.setRequestFocusEnabled(true);
+    jPanelNaranjaRelleno.setToolTipText("Naranja");
+    jPanelNaranjaRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelNaranjaRelleno_mouseAdapter(this));
+    jPanelVioletaRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelVioletaRelleno.setToolTipText("Violeta");
+    jPanelVioletaRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelVioletaRelleno_mouseAdapter(this));
+    jPanelMarronRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelMarronRelleno.setToolTipText("Marrón");
+    jPanelMarronRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelMarronRelleno_mouseAdapter(this));
+    jPanelGrisClaroRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelGrisClaroRelleno.setToolTipText("Gris");
+    jPanelGrisClaroRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelGrisClaroRelleno_mouseAdapter(this));
+    jPanelBeigeRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelBeigeRelleno.setToolTipText("Beige");
+    jPanelBeigeRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelBeigeRelleno_mouseAdapter(this));
+    jPanelLimaRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelLimaRelleno.setToolTipText("Lima");
+    jPanelLimaRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelLimaRelleno_mouseAdapter(this));
+    jPanelAzulClaroRelleno.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelAzulClaroRelleno.setToolTipText("Azul claro");
+    jPanelAzulClaroRelleno.addMouseListener(new Ventana_atributos_dibujo_jPanelAzulClaroRelleno_mouseAdapter(this));
+    jPanelColorTrazo.setLayout(borderLayout2);
+    jLabel2.setText("Color del trazo:");
+    jPanelElegirColoresTrazo.setLayout(gridLayout4);
+    jPanelNegroTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelNegroTrazo.setToolTipText("Negro");
+    jPanelNegroTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelNegroTrazo_mouseAdapter(this));
+    jPanelRosaTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelRosaTrazo.setDebugGraphicsOptions(0);
+    jPanelRosaTrazo.setToolTipText("Rosa");
+    jPanelRosaTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelRosaTrazo_mouseAdapter(this));
+    jPanelNaranjaTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelNaranjaTrazo.setToolTipText("Naranja");
+    jPanelNaranjaTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelNaranjaTrazo_mouseAdapter(this));
+    jPanelAzulTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelAzulTrazo.setToolTipText("Azul");
+    jPanelAzulTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelAzulTrazo_mouseAdapter(this));
+    jPanelVerdeTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelVerdeTrazo.setToolTipText("Verde");
+    jPanelVerdeTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelVerdeTrazo_mouseAdapter(this));
+    jPanelAmarilloTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelAmarilloTrazo.setToolTipText("Amarillo");
+    jPanelAmarilloTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelAmarilloTrazo_mouseAdapter(this));
+    jPanelRojoTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelRojoTrazo.setToolTipText("Rojo");
+    jPanelRojoTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelRojoTrazo_mouseAdapter(this));
+    jPanelBlancoTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelBlancoTrazo.setToolTipText("Blanco");
+    jPanelBlancoTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelBlancoTrazo_mouseAdapter(this));
+    jPanelMarronTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelMarronTrazo.setToolTipText("Marrón");
+    jPanelMarronTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelMarronTrazo_mouseAdapter(this));
+    jPanelVioletaTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelVioletaTrazo.setToolTipText("Violeta");
+    jPanelVioletaTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelVioletaTrazo_mouseAdapter(this));
+    jPanelAzulClaroTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelAzulClaroTrazo.setToolTipText("Azul claro");
+    jPanelAzulClaroTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelAzulClaroTrazo_mouseAdapter(this));
+    jPanelLimaTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelLimaTrazo.setToolTipText("Lima");
+    jPanelLimaTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelLimaTrazo_mouseAdapter(this));
+    jPanelBeigeTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelBeigeTrazo.setToolTipText("Beige");
+    jPanelBeigeTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelBeigeTrazo_mouseAdapter(this));
+    jPanelGrisClaroTrazo.setBorder(BorderFactory.createRaisedBevelBorder());
+    jPanelGrisClaroTrazo.setToolTipText("Gris");
+    jPanelGrisClaroTrazo.addMouseListener(new Ventana_atributos_dibujo_jPanelGrisClaroTrazo_mouseAdapter(this));
+    jPanelColorRelleno.setLayout(borderLayout3);
+    jPanelColoresActuales.setLayout(borderLayout4);
+    jLabel3.setText("Color Relleno");
+    jLabel3.setText("Colores actuales:");
+    jPanel1.setLayout(flowLayout2);
+    jLabel4.setText("Relleno:");
+    jLabel5.setText("Trazo:");
+    tbBotonElipse.setToolTipText("Elipse");
+    tbBotonElipse.addMouseListener(new Ventana_atributos_dibujo_tbBotonElipse_mouseAdapter(this));
+    tbBotonRectangulo.setToolTipText("Rectángulo");
+    tbBotonRectangulo.addMouseListener(new Ventana_atributos_dibujo_tbBotonRectangulo_mouseAdapter(this));
+    tbBotonLinea.setToolTipText("Línea recta");
+    tbBotonLinea.addMouseListener(new Ventana_atributos_dibujo_tbBotonLinea_mouseAdapter(this));
+    tbBotonPunto.setToolTipText("Punto");
+    tbBotonPunto.addMouseListener(new Ventana_atributos_dibujo_tbBotonPunto_mouseAdapter(this));
+    tbBotonRectanguloRedondeado.setToolTipText("Rectángulo redondeado");
+    tbBotonArco.setToolTipText("Arco");
+    tbBotonCPC.setToolTipText("Curva con punto de control");
+    tbBotonTexto.setToolTipText("Texto");
+    tbBotonEstrella.setToolTipText("Estrella");
+    jPanel1.add(jLabel4, null);
+    jPanel1.add(jPanelMostrarColorActualRelleno, null);
+    jPanel1.add(jLabel5, null);
+    jPanel1.add(jPanelMostrarColorActualTrazo, null);
+    jPanelFormasAtributos.add(jPanelColor, BorderLayout.SOUTH);
+    jPanelElegirColores.add(jPanelNegroRelleno, null);
+    jPanelElegirColores.add(jPanelGrisClaroRelleno, null);
+    jPanelElegirColores.add(jPanelBeigeRelleno, null);
+    jPanelElegirColores.add(jPanelLimaRelleno, null);
+    jPanelElegirColores.add(jPanelAzulClaroRelleno, null);
+    jPanelElegirColores.add(jPanelVioletaRelleno, null);
+    jPanelElegirColores.add(jPanelMarronRelleno, null);
+    jPanelElegirColores.add(jPanelBlancoRelleno, null);
+    jPanelElegirColores.add(jPanelRojoRelleno, null);
+    jPanelElegirColores.add(jPanelAmarilloRelleno, null);
+    jPanelElegirColores.add(jPanelVerdeRelleno, null);
+    jPanelElegirColores.add(jPanelAzulRelleno, null);
+    jPanelElegirColores.add(jPanelRosaRelleno, null);
+    jPanelElegirColores.add(jPanelNaranjaRelleno, null);
+    jPanelColorRelleno.add(jPanelRellenoPersonalizado,  BorderLayout.SOUTH);
+    jPanelRellenoPersonalizado.add(jPanelElegirRellenoPersonalizado, BorderLayout.EAST);
+    jPanelRellenoPersonalizado.add(jLabel8, BorderLayout.CENTER);
+    jPanelColor.add(jPanelColoresActuales,  BorderLayout.SOUTH);
+    jPanelColor.add(jPanelColorTrazo, BorderLayout.NORTH);
+    jPanelFormasAtributos.add(jPanelAtributos, BorderLayout.CENTER);
+    jPanelNegritaCursiva.add(cbNegrita, null);
+    jPanelNegritaCursiva.add(lNegrita, null);
+    jPanelNegritaCursiva.add(cbCursiva, null);
+    jPanelNegritaCursiva.add(lCursiva, null);
+    jPanelAtributosTexto.add(jPanelSubrayado, BorderLayout.CENTER);
+    jPanelAtributosTexto.add(jPanelNegritaCursiva, BorderLayout.NORTH);
+    jPanelSubrayado.add(cbSubrayado, null);
+    jPanelSubrayado.add(lSubrayado, null);
+    jPanelAtributos.add(lGrosor, null);
+    jPanelAtributos.add(sGrosor, null);
+    jPanelAtributos.add(lTipoTrazo, null);
+    jPanelAtributos.add(cTipoTrazo, null);
+    jPanelAtributos.add(lRelleno, null);
+    jPanelAtributos.add(cRelleno, null);
+    jPanelAtributos.add(lFuente, null);
+    jPanelAtributos.add(cFuentes, null);
+    jPanelAtributos.add(jLabel6, null);
+    jPanelAtributos.add(tTexto, null);
+    jPanelAtributos.add(lTamaFuente, null);
+    jPanelAtributos.add(sTamaFuente, null);
+    jPanelAtributos.add(jPanelAtributosTexto, null);
+    jPanelFormasAtributos.add(jPanelContenedor, BorderLayout.NORTH);
+    jPanelContenedor.add(jPanelFormas, BorderLayout.NORTH);
+    jPanelFormas.add(tbBotonPunto, null);
+    jPanelFormas.add(tbBotonLinea, null);
+    jPanelFormas.add(tbBotonRectangulo, null);
+    jPanelFormas.add(tbBotonRectanguloRedondeado, null);
+    jPanelFormas.add(tbBotonElipse, null);
+    jPanelFormas.add(tbBotonArco, null);
+    jPanelFormas.add(tbBotonCPC, null);
+    jPanelFormas.add(tbBotonTexto, null);
+    jPanelFormas.add(tbBotonEstrella, null);
+    jPanelFormas.add(tbBotonTrazoLibre, null);
+    jPanelFormas.add(tbBotonGoma, null);
+    this.getContentPane().add(jPanelFormasAtributos, null);
+    jPanelColorTrazo.add(jLabel2, BorderLayout.NORTH);
+    jPanelColorTrazo.add(jPanelElegirColoresTrazo, BorderLayout.CENTER);
+    jPanelElegirColoresTrazo.add(jPanelNegroTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelGrisClaroTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelBeigeTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelLimaTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelAzulClaroTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelVioletaTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelMarronTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelBlancoTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelRojoTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelAmarilloTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelVerdeTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelAzulTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelRosaTrazo, null);
+    jPanelElegirColoresTrazo.add(jPanelNaranjaTrazo, null);
+    jPanelColorTrazo.add(jPanelElegirTrazoPersonalizado,  BorderLayout.SOUTH);
+    jPanelElegirTrazoPersonalizado.add(jPanelTrazoPersonalizado, BorderLayout.EAST);
+    jPanelElegirTrazoPersonalizado.add(jLabel7, BorderLayout.WEST);
+    jPanelColor.add(jPanelColorRelleno, BorderLayout.CENTER);
+    jPanelColorRelleno.add(jLabel1, BorderLayout.NORTH);
+    jPanelColorRelleno.add(jPanelElegirColores, BorderLayout.CENTER);
+    jPanelColoresActuales.add(jPanel1, BorderLayout.CENTER);
+    jPanelColoresActuales.add(jLabel3, BorderLayout.NORTH);
+    cRelleno.addActionListener(new Ventana_atributos_dibujo_cRelleno_actionAdapter(this));
+    tbBotonRectanguloRedondeado.addMouseListener(new Ventana_atributos_dibujo_tbBotonRectanguloRedondeado_mouseAdapter(this));
+    tbBotonArco.addMouseListener(new Ventana_atributos_dibujo_tbBotonArco_mouseAdapter(this));
+    tbBotonCPC.addMouseListener(new Ventana_atributos_dibujo_tbBotonCPC_mouseAdapter(this));
+    tbBotonTexto.addMouseListener(new Ventana_atributos_dibujo_tbBotonTexto_mouseAdapter(this));
+    tbBotonEstrella.addMouseListener(new Ventana_atributos_dibujo_tbBotonEstrella_mouseAdapter(this));
+    tbBotonTrazoLibre.setToolTipText("Trazo libre");
+    tbBotonTrazoLibre.addMouseListener(new Ventana_atributos_dibujo_tbBotonTrazoLibre_mouseAdapter(this));
+    cTipoTrazo.addActionListener(new Ventana_atributos_dibujo_cTipoTrazo_actionAdapter(this));
+    jLabel6.setText("Texto:");
+    tTexto.setPreferredSize(new Dimension(110, 20));
+    tTexto.addFocusListener(new Ventana_atributos_dibujo_tTexto_focusAdapter(this));
+    jPanelMostrarColorActualTrazo.setBorder(BorderFactory.createLineBorder(Color.black));
+    jPanelMostrarColorActualRelleno.setBorder(BorderFactory.createLineBorder(Color.black));
+    jPanelRojoTrazo.setForeground(Color.black);
+    sTamaFuente.setBorder(BorderFactory.createRaisedBevelBorder());
+    tbBotonArco.setActionCommand("");
+    cFuentes.addActionListener(new Ventana_atributos_dibujo_cFuentes_actionAdapter(this));
+  }
+
+  void jPanelMarronTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(marron);
+    color_actual_trazo = marron;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelNaranjaTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(naranja);
+    color_actual_trazo = naranja;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelVioletaTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(violeta);
+    color_actual_trazo = violeta;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelRosaTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(rosa);
+    color_actual_trazo = rosa;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelAzulClaroTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(azul_claro);
+    color_actual_trazo = azul_claro;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelAzulTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(azul);
+    color_actual_trazo = azul;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelLimaTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(lima);
+    color_actual_trazo = lima;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelVerdeTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(verde);
+    color_actual_trazo = verde;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelBeigeTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(beige);
+    color_actual_trazo = beige;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelAmarilloTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(amarillo);
+    color_actual_trazo = amarillo;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelGrisClaroTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(gris);
+    color_actual_trazo = gris;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelRojoTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(rojo);
+    color_actual_trazo = rojo;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelNegroTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(negro);
+    color_actual_trazo = negro;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelBlancoTrazo_mouseClicked(MouseEvent e)
+  {
+    jPanelMostrarColorActualTrazo.setBackground(blanco);
+    color_actual_trazo = blanco;
+    creador.setColorTrazo(color_actual_trazo);
+  }
+
+  void jPanelNegroRelleno_mouseClicked(MouseEvent e)
+  {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(negro);
+      color_actual_relleno = negro;
+      creador.setColorRelleno(negro);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(negro);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(negro);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelGrisClaroRelleno_mouseClicked(MouseEvent e)
+  {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(gris);
+      color_actual_relleno = gris;
+      creador.setColorRelleno(gris);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(gris);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(gris);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelBeigeRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(beige);
+      color_actual_relleno = beige;
+      creador.setColorRelleno(beige);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(beige);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(beige);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelLimaRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(lima);
+      color_actual_relleno = lima;
+      creador.setColorRelleno(lima);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(lima);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(lima);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelAzulClaroRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(azul_claro);
+      color_actual_relleno = azul_claro;
+      creador.setColorRelleno(azul_claro);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(azul_claro);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(azul_claro);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelVioletaRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(violeta);
+      color_actual_relleno = violeta;
+      creador.setColorRelleno(violeta);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(violeta);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(violeta);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelMarronRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(marron);
+      color_actual_relleno = marron;
+      creador.setColorRelleno(marron);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(marron);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(marron);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelNaranjaRelleno_mouseClicked(MouseEvent e) {
+    jPanelMostrarColorActualRelleno.setBackground(naranja);
+    color_actual_relleno = naranja;
+    creador.setColorRelleno(naranja);
+  }
+
+  void jPanelRosaRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(rosa);
+      color_actual_relleno = rosa;
+      creador.setColorRelleno(rosa);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(rosa);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(rosa);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelAzulRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(azul);
+      color_actual_relleno = azul;
+      creador.setColorRelleno(azul);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(azul);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(azul);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelVerdeRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(verde);
+      color_actual_relleno = verde;
+      creador.setColorRelleno(verde);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(verde);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(verde);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelAmarilloRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(amarillo);
+      color_actual_relleno = amarillo;
+      creador.setColorRelleno(amarillo);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(amarillo);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(amarillo);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelRojoRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(rojo);
+      color_actual_relleno = rojo;
+      creador.setColorRelleno(rojo);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(rojo);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(rojo);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void jPanelBlancoRelleno_mouseClicked(MouseEvent e) {
+    if( creador.getTipoRelleno() != 2 )
+    {
+      jPanelMostrarColorActualRelleno.setBackground(blanco);
+      color_actual_relleno = blanco;
+      creador.setColorRelleno(blanco);
+    }
+    else
+    {
+        if( creador.getDefinirDegradado1() )
+        {
+          creador.setDegradado1(blanco);
+          creador.setDefinirDegradado1(false);
+          creador.setDefinirDegradado2(true);
+        }
+        else
+        {
+          if (creador.getDefinirDegradado2())
+          {
+            creador.setDegradado2(blanco);
+            creador.setDefinirDegradado2(false);
+            creador.setDefinirDegradado1(true);
+          }
+        }
+    }
+  }
+
+  void bForma1_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(1);
+  }
+
+  void bForma2_mouseClicked(MouseEvent e) {
+    creador.setTipoObjeto(2);
+  }
+
+  void bForma3_mouseClicked(MouseEvent e) {
+    creador.setTipoObjeto(3);
+  }
+
+  void bForma4_mouseClicked(MouseEvent e) {
+    creador.setTipoObjeto(4);
+  }
+
+  JToggleButton tbBotonCPC = new JToggleButton();
+  JToggleButton tbBotonTexto = new JToggleButton();
+  JToggleButton tbBotonEstrella = new JToggleButton();
+  JToggleButton tbBotonArco = new JToggleButton();
+  JToggleButton tbBotonRectanguloRedondeado = new JToggleButton();
+  JToggleButton tbBotonElipse = new JToggleButton();
+  JToggleButton tbBotonRectangulo = new JToggleButton();
+  JToggleButton tbBotonLinea = new JToggleButton();
+  JToggleButton tbBotonPunto = new JToggleButton();
+  JToggleButton tbBotonTrazoLibre = new JToggleButton();
+  JLabel jLabel6 = new JLabel();
+  JTextField tTexto = new JTextField();
+  TitledBorder titledBorder1;
+  TitledBorder titledBorder2;
+  JPanel jPanelSubrayado = new JPanel();
+  BorderLayout borderLayout10 = new BorderLayout();
+  JLabel lNegrita = new JLabel();
+  JCheckBox cbCursiva = new JCheckBox();
+  JLabel lCursiva = new JLabel();
+  JPanel jPanelAtributosTexto = new JPanel();
+  JCheckBox cbNegrita = new JCheckBox();
+  JLabel lSubrayado = new JLabel();
+  JCheckBox cbSubrayado = new JCheckBox();
+  JPanel jPanelNegritaCursiva = new JPanel();
+  JToggleButton tbBotonGoma = new JToggleButton();
+  BorderLayout borderLayout5 = new BorderLayout();
+  JPanel jPanelElegirTrazoPersonalizado = new JPanel();
+  FlowLayout flowLayout4 = new FlowLayout();
+  JLabel jLabel7 = new JLabel();
+  JPanel jPanelTrazoPersonalizado = new JPanel();
+  JLabel jLabel8 = new JLabel();
+  JPanel jPanelRellenoPersonalizado = new JPanel();
+  JPanel jPanelElegirRellenoPersonalizado = new JPanel();
+  BorderLayout borderLayout6 = new BorderLayout();
+
+  void tbBotonPunto_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(1);
+  }
+
+  void tbBotonLinea_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(2);
+  }
+
+  void tbBotonRectangulo_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(3);
+  }
+
+  void tbBotonRectanguloRedondeado_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(4);
+  }
+
+  void tbBotonElipse_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(5);
+  }
+
+  void tbBotonArco_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(6);
+  }
+
+  void tbBotonCPC_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(7);
+  }
+
+  void tbBotonTexto_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(8);
+  }
+
+  void tbBotonEstrella_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(9);
+  }
+
+  void tbBotonTrazoLibre_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(10);
+  }
+
+  void tbBotonGoma_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(11);
+  }
+
+  void cRelleno_actionPerformed(ActionEvent e)
+  {
+    creador.setTipoRelleno(cRelleno.getSelectedIndex());
+    // Aquí actualizo el tipo de relleno que quiere el usuario
+  }
+
+  void cTipoTrazo_actionPerformed(ActionEvent e)
+  {
+    creador.setTipoTrazo(cTipoTrazo.getSelectedIndex());
+    // Aquí actualizo el tipo de trazo que quiere el usuario
+  }
+
+  void tTexto_focusLost(FocusEvent e)
+  {
+    creador.setTexto(tTexto.getText());
+  }
+
+
+  void cbNegrita_mouseClicked(MouseEvent e)
+  {
+    creador.cambiarNegrita(cbNegrita.isSelected());
+  }
+
+  void cbCursiva_mouseClicked(MouseEvent e)
+  {
+    creador.cambiarCursiva(cbCursiva.isSelected());
+  }
+
+  void jPanelTrazoPersonalizado_mouseClicked(MouseEvent e)
+  {
+    try
+    {
+      JColorChooser trazoPersonalizado = new JColorChooser();
+      trazoPersonalizado.setVisible(true);
+      trazo_personalizado = trazoPersonalizado.showDialog(null,"Seleccione el color del trazo", trazo_personalizado);
+      if( trazo_personalizado != null )
+      {
+        jPanelMostrarColorActualTrazo.setBackground(trazo_personalizado);
+        color_actual_trazo = trazo_personalizado;
+        creador.setColorTrazo(color_actual_trazo);
+        jPanelTrazoPersonalizado.setBackground(color_actual_trazo);
+      }
+    }
+    catch(Exception exp)
+    {
+      JOptionPane.showMessageDialog(this, "Error al leer el color.", "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  void jPanelElegirRellenoPersonalizado_mouseClicked(MouseEvent e)
+  {
+    try
+    {
+      JColorChooser colorPersonalizado = new JColorChooser();
+      colorPersonalizado.setVisible(true);
+      relleno_personalizado = colorPersonalizado.showDialog(null,"Seleccione el color del relleno", relleno_personalizado);
+      if( relleno_personalizado != null )
+      {
+        jPanelMostrarColorActualRelleno.setBackground(relleno_personalizado);
+        color_actual_relleno = relleno_personalizado;
+        creador.setColorRelleno(color_actual_relleno);
+        jPanelElegirRellenoPersonalizado.setBackground(color_actual_relleno);
+      }
+    }
+    catch(Exception exp)
+    {
+      JOptionPane.showMessageDialog(this, "Error al leer el color.", "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+
+  void cFuentes_actionPerformed(ActionEvent e)
+  {
+    creador.setFuente( (String)cFuentes.getSelectedItem() );
+  }
+
+  void cbSubrayado_mouseClicked(MouseEvent e)
+  {
+    creador.cambiarSubrayado( cbSubrayado.isSelected() );
+  }
+
+}
+
+class Ventana_atributos_dibujo_sGrosor_mouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_sGrosor_mouseMotionAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseDragged(MouseEvent e) {
+    adaptee.sGrosor_mouseDragged(e);
+  }
+}
+
+class Ventana_atributos_dibujo_sTamaFuente_mouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_sTamaFuente_mouseMotionAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseDragged(MouseEvent e) {
+    adaptee.sTamaFuente_mouseDragged(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelMarronTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelMarronTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelMarronTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelNaranjaTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelNaranjaTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelNaranjaTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelVioletaTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelVioletaTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelVioletaTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelRosaTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelRosaTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelRosaTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelAzulClaroTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelAzulClaroTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelAzulClaroTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelAzulTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelAzulTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelAzulTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelLimaTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelLimaTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelLimaTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelVerdeTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelVerdeTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelVerdeTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelBeigeTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelBeigeTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelBeigeTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelAmarilloTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelAmarilloTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelAmarilloTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelGrisClaroTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelGrisClaroTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelGrisClaroTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelRojoTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelRojoTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelRojoTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelNegroTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelNegroTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelNegroTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelBlancoTrazo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelBlancoTrazo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelBlancoTrazo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelNegroRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelNegroRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelNegroRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelGrisClaroRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelGrisClaroRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelGrisClaroRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelBeigeRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelBeigeRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelBeigeRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelLimaRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelLimaRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelLimaRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelAzulClaroRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelAzulClaroRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelAzulClaroRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelVioletaRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelVioletaRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelVioletaRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelMarronRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelMarronRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelMarronRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelNaranjaRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelNaranjaRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelNaranjaRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelRosaRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelRosaRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelRosaRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelAzulRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelAzulRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelAzulRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelVerdeRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelVerdeRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelVerdeRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelAmarilloRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelAmarilloRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelAmarilloRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelRojoRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelRojoRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelRojoRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelBlancoRelleno_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelBlancoRelleno_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelBlancoRelleno_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonPunto_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonPunto_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonPunto_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonLinea_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonLinea_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonLinea_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonRectangulo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonRectangulo_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonRectangulo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonElipse_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonElipse_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonElipse_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_cRelleno_actionAdapter implements java.awt.event.ActionListener {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_cRelleno_actionAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cRelleno_actionPerformed(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonRectanguloRedondeado_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonRectanguloRedondeado_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonRectanguloRedondeado_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonArco_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonArco_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonArco_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonCPC_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonCPC_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonCPC_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonTexto_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonTexto_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonTexto_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonEstrella_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonEstrella_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonEstrella_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonTrazoLibre_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonTrazoLibre_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonTrazoLibre_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_cTipoTrazo_actionAdapter implements java.awt.event.ActionListener {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_cTipoTrazo_actionAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cTipoTrazo_actionPerformed(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tTexto_focusAdapter extends java.awt.event.FocusAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tTexto_focusAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void focusLost(FocusEvent e) {
+    adaptee.tTexto_focusLost(e);
+  }
+}
+
+class Ventana_atributos_dibujo_cFuentes_actionAdapter implements java.awt.event.ActionListener {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_cFuentes_actionAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cFuentes_actionPerformed(e);
+  }
+}
+
+class Ventana_atributos_dibujo_cbNegrita_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_cbNegrita_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.cbNegrita_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_cbCursiva_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_cbCursiva_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.cbCursiva_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_cbSubrayado_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_cbSubrayado_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.cbSubrayado_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonGoma_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_tbBotonGoma_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonGoma_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelTrazoPersonalizado_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelTrazoPersonalizado_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelTrazoPersonalizado_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_jPanelElegirRellenoPersonalizado_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_atributos_dibujo adaptee;
+
+  Ventana_atributos_dibujo_jPanelElegirRellenoPersonalizado_mouseAdapter(Ventana_atributos_dibujo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.jPanelElegirRellenoPersonalizado_mouseClicked(e);
+  }
+}

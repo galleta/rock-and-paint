@@ -1,0 +1,40 @@
+package super_paint;
+
+import java.awt.*;
+import java.awt.font.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class Texto
+{
+  // ***** Atributos de la clase *****
+  private Font fuente;
+  private String text;
+  private TextLayout layout;
+  private Point posicion;
+  private Color color;
+  private int tama;
+  // *********************************
+
+  public Texto()
+  {
+  }
+
+  public Texto(Font f, String t, TextLayout tl, Point pos, Color c, int tam)
+  {
+    fuente = f;
+    text = t;
+    layout = tl;
+    posicion = pos;
+    color = c;
+    tama = tam;
+  }
+
+}

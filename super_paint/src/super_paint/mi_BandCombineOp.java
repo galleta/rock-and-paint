@@ -1,0 +1,54 @@
+package super_paint;
+
+import java.awt.Color;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class mi_BandCombineOp extends objeto
+{
+  float[][] array;
+
+  public mi_BandCombineOp()
+  {
+  }
+
+  public mi_BandCombineOp(float[][] cosa)
+  {
+    array = cosa;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve la matriz correspondiente a la transformación.</p>
+   * @return Matriz de la transformación
+   */
+  public float[][] getArray()
+  {
+    return array;
+  }
+
+  /**
+   * getColor
+   *
+   * @return Color
+   */
+  public Color getColor() {
+    return null;
+  }
+
+  /**
+   * getTama
+   *
+   * @return int
+   */
+  public int getTama() {
+    return 0;
+  }
+
+}

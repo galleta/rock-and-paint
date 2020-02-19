@@ -1,0 +1,56 @@
+package super_paint;
+
+import java.awt.Color;
+import java.awt.image.ShortLookupTable;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class mi_LookupOp extends objeto
+{
+  ShortLookupTable tab;
+
+  public mi_LookupOp() {
+  }
+
+
+  public mi_LookupOp(ShortLookupTable tabla)
+  {
+    tab = tabla;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve la tabla correspondiente a la transformación.</p>
+   * @return Tabla correspondiente a la transformación
+   */
+  public ShortLookupTable getTable()
+  {
+    return tab;
+  }
+
+
+  /**
+   * getColor
+   *
+   * @return Color
+   */
+  public Color getColor() {
+    return null;
+  }
+
+  /**
+   * getTama
+   *
+   * @return int
+   */
+  public int getTama() {
+    return 0;
+  }
+
+}

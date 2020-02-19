@@ -1,0 +1,159 @@
+package super_paint;
+
+import java.awt.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class atributos
+{
+
+  Shape forma;
+  private int grosor_linea, tipo_relleno, tama_fuente, tipo_trazo;
+  private float transparencia;
+  private String texto, nombre_fuente;
+  private Color trazo, relleno, degradado1, degradado2;
+  private boolean negrita, cursiva, subrayado, tachado;
+  private Point punto_dibujar_texto;
+
+  public atributos()
+  {
+  }
+
+  /**
+   * <p><u>Descripción</u>: Constructor.</p>
+   * @param forma Forma a almacenar
+   * @param grosor_linea Grosor de la línea
+   * @param tipo_relleno Tipo de relleno de la forma
+   * @param trazo Color del trazo
+   * @param relleno Color del relleno (si lo tiene)
+   * @param transparencia Nivel de transparencia de la figura (si la tiene)
+   * @param tama_fuente Tamaño de la fuente (si es texto)
+   * @param nombre_fuente Nombre de la fuente (si es texto)
+   * @param texto Texto para escribir (si es texto)
+   * @param degradado1 Color 1 del degradado (si tiene relleno degradado)
+   * @param degradado2 Color 2 del degradado (si tiene relleno degradado)
+   * @param tipo_trazo Tipo del trazo de la figura
+   * @param negrita Verdadero si la letra está en negrita (si es texto)
+   * @param cursiva Verdadero si la letra está en cursiva (si es texto)
+   * @param subrayado Verdadero si la letra está subrayada (si es texto)
+   * @param tachado Verdadero si la letra está tachada (si es texto)
+   * @param punto_dibujar_texto Punto donde se dibujará el texto (si es texto)
+   */
+  public atributos(Shape forma, int grosor_linea, int tipo_relleno, Color trazo,
+                   Color relleno, float transparencia, int tama_fuente, String nombre_fuente, String texto,
+                   Color degradado1, Color degradado2, int tipo_trazo, boolean negrita,
+                   boolean cursiva, boolean subrayado, boolean tachado,
+                   Point punto_dibujar_texto)
+  {
+    this.forma = forma;
+    this.grosor_linea = grosor_linea;
+    this.tipo_relleno = tipo_relleno;
+    this.trazo = trazo;
+    this.relleno = relleno;
+    this.transparencia = transparencia;
+    this.tama_fuente = tama_fuente;
+    this.nombre_fuente = nombre_fuente;
+    this.texto = texto;
+    this.degradado1 = degradado1;
+    this.degradado2 = degradado2;
+    this.tipo_trazo = tipo_trazo;
+    this.negrita = negrita;
+    this.cursiva = cursiva;
+    this.subrayado = subrayado;
+    this.tachado = tachado;
+    this.punto_dibujar_texto = punto_dibujar_texto;
+  }
+
+  public int getGrosorLinea()
+  {
+    return grosor_linea;
+  }
+
+  public Shape getForma()
+  {
+    return forma;
+  }
+
+  public float getTransparencia()
+  {
+    return transparencia;
+  }
+
+  public int getTipoTrazo()
+  {
+    return tipo_trazo;
+  }
+
+  public Color getColorTrazo()
+  {
+    return trazo;
+  }
+
+  public int getTipoRelleno()
+  {
+    return tipo_relleno;
+  }
+
+  public Color getColorRelleno()
+  {
+    return relleno;
+  }
+
+  public Color getDegradado1()
+  {
+    return degradado1;
+  }
+
+  public Color getDegradado2()
+  {
+    return degradado2;
+  }
+
+  public int getTamaFuente()
+  {
+    return tama_fuente;
+  }
+
+  public boolean getNegrita()
+  {
+    return negrita;
+  }
+
+  public boolean getCursiva()
+  {
+    return cursiva;
+  }
+
+  public boolean getSubrayado()
+  {
+    return subrayado;
+  }
+
+  public boolean getTachado()
+  {
+    return tachado;
+  }
+
+  public String getNombreFuente()
+  {
+    return nombre_fuente;
+  }
+
+  public String getTexto()
+  {
+    return texto;
+  }
+
+  public Point getPuntoDibujarTexto()
+  {
+    return punto_dibujar_texto;
+  }
+
+}

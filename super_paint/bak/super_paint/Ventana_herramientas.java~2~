@@ -1,0 +1,124 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class Ventana_herramientas extends JFrame {
+  JPanel jPanelSubrayado = new JPanel();
+  JLabel lTipoTrazo = new JLabel();
+  FlowLayout flowLayout1 = new FlowLayout();
+  JLabel lNegrita = new JLabel();
+  JPanel jPanelAtributos = new JPanel();
+  JComboBox cTipoTrazo = new JComboBox();
+  JLabel lTamaFuente = new JLabel();
+  JLabel lGrosor = new JLabel();
+  JTextField tTexto = new JTextField();
+  JPanel jPanelAtributosTexto = new JPanel();
+  JSlider sTamaFuente = new JSlider();
+  JComboBox cRelleno = new JComboBox();
+  JLabel lSubrayado = new JLabel();
+  JPanel jPanelNegritaCursiva = new JPanel();
+  JCheckBox cbSubrayado = new JCheckBox();
+  JLabel lFuente = new JLabel();
+  BorderLayout borderLayout10 = new BorderLayout();
+  JSlider sGrosor = new JSlider();
+  JComboBox cFuentes = new JComboBox();
+  JLabel lRelleno = new JLabel();
+  JCheckBox cbCursiva = new JCheckBox();
+  JLabel jLabel6 = new JLabel();
+  JLabel lCursiva = new JLabel();
+  JCheckBox cbNegrita = new JCheckBox();
+  BorderLayout borderLayout1 = new BorderLayout();
+
+  public Ventana_herramientas() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  void jbInit() throws Exception {
+    this.getContentPane().setLayout(borderLayout1);
+    lTipoTrazo.setText("Tipo de trazo:");
+    jPanelAtributos.setLayout(flowLayout1);
+    jPanelAtributos.setBorder(BorderFactory.createLoweredBevelBorder());
+    cTipoTrazo.setPreferredSize(new Dimension(100, 19));
+    cTipoTrazo.addActionListener(new Ventana_atributos_dibujo_cTipoTrazo_actionAdapter(this));
+    lTamaFuente.setText("Tamaño fuente: 12");
+    lGrosor.setText("Grosor de línea: 3");
+    tTexto.setPreferredSize(new Dimension(110, 20));
+    tTexto.addFocusListener(new Ventana_atributos_dibujo_tTexto_focusAdapter(this));
+    jPanelAtributosTexto.setLayout(borderLayout10);
+    sTamaFuente.setValue(12);
+    sTamaFuente.addMouseMotionListener(new Ventana_atributos_dibujo_sTamaFuente_mouseMotionAdapter(this));
+    sTamaFuente.setPreferredSize(new Dimension(90, 24));
+    sTamaFuente.setMaximumSize(new Dimension(90, 24));
+    sTamaFuente.setMaximum(70);
+    sTamaFuente.setBorder(BorderFactory.createRaisedBevelBorder());
+    cRelleno.setPreferredSize(new Dimension(100, 19));
+    cRelleno.addActionListener(new Ventana_atributos_dibujo_cRelleno_actionAdapter(this));
+    cbSubrayado.addMouseListener(new Ventana_atributos_dibujo_cbSubrayado_mouseAdapter(this));
+    cbSubrayado.addMouseListener(new Ventana_atributos_dibujo_cbSubrayado_mouseAdapter(this));
+    cbSubrayado.setToolTipText("Subrayado");
+    lFuente.setText("Tipo de fuente:");
+    sGrosor.setToolTipText("");
+    sGrosor.setPreferredSize(new Dimension(90, 24));
+    sGrosor.setMaximumSize(new Dimension(90, 24));
+    sGrosor.setBorder(BorderFactory.createRaisedBevelBorder());
+    sGrosor.setMajorTickSpacing(1);
+    sGrosor.setMaximum(10);
+    sGrosor.setMinimum(1);
+    sGrosor.setValue(3);
+    sGrosor.addMouseMotionListener(new Ventana_atributos_dibujo_sGrosor_mouseMotionAdapter(this));
+    cFuentes.setPreferredSize(new Dimension(100, 19));
+    cFuentes.addActionListener(new Ventana_atributos_dibujo_cFuentes_actionAdapter(this));
+    lRelleno.setText("Tipo de relleno:");
+    cbCursiva.addMouseListener(new Ventana_atributos_dibujo_cbCursiva_mouseAdapter(this));
+    cbCursiva.addMouseListener(new Ventana_atributos_dibujo_cbCursiva_mouseAdapter(this));
+    cbCursiva.setToolTipText("Cursiva");
+    jLabel6.setText("Texto:");
+    cbNegrita.addMouseListener(new Ventana_atributos_dibujo_cbNegrita_mouseAdapter(this));
+    cbNegrita.addMouseListener(new Ventana_atributos_dibujo_cbNegrita_mouseAdapter(this));
+    cbNegrita.setToolTipText("Negrita");
+    cTipoTrazo.addItem("Continuo");
+    cTipoTrazo.addItem("Punteado");
+    cTipoTrazo.addItem("Redondeado");
+    cRelleno.addItem("Sin relleno");
+    cRelleno.addItem("Liso");
+    cRelleno.addItem("Degradado Vert.");
+    cRelleno.addItem("Degradado Horiz.");
+    jPanelAtributos.add(lGrosor, null);
+    jPanelAtributos.add(sGrosor, null);
+    jPanelAtributos.add(lTipoTrazo, null);
+    jPanelAtributos.add(cTipoTrazo, null);
+    jPanelAtributos.add(lRelleno, null);
+    jPanelAtributos.add(cRelleno, null);
+    jPanelAtributos.add(lFuente, null);
+    jPanelAtributos.add(cFuentes, null);
+    jPanelAtributos.add(jLabel6, null);
+    jPanelAtributos.add(tTexto, null);
+    jPanelAtributos.add(lTamaFuente, null);
+    jPanelAtributos.add(sTamaFuente, null);
+    jPanelAtributos.add(jPanelAtributosTexto, null);
+    jPanelSubrayado.add(cbSubrayado, null);
+    jPanelSubrayado.add(lSubrayado, null);
+    jPanelAtributosTexto.add(jPanelNegritaCursiva, BorderLayout.NORTH);
+    jPanelAtributosTexto.add(jPanelSubrayado, BorderLayout.CENTER);
+    jPanelNegritaCursiva.add(cbNegrita, null);
+    jPanelNegritaCursiva.add(lNegrita, null);
+    jPanelNegritaCursiva.add(cbCursiva, null);
+    jPanelNegritaCursiva.add(lCursiva, null);
+    this.getContentPane().add(jPanelAtributos,  BorderLayout.CENTER);
+  }
+}

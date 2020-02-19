@@ -1,0 +1,415 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+
+public class Ventana_formas extends JInternalFrame
+{
+  BorderLayout borderLayout8 = new BorderLayout();
+  GridLayout gridLayout2 = new GridLayout(4,1);
+  JPanel jPanelContenedor = new JPanel();
+  JPanel jPanelFormas = new JPanel();
+  JPanel jPanelFormasAtributos = new JPanel();
+  BorderLayout borderLayout9 = new BorderLayout();
+  GridLayout gridLayout1 = new GridLayout();
+  Interfaz creador = null;
+
+  // ***** Variables privadas de la clase *****
+  private ButtonGroup grupo = new ButtonGroup ();
+  // ******************************************
+
+  public Ventana_formas(Interfaz inter)
+  {
+    creador = inter;
+    try
+    {
+      jbInit();
+    }
+    catch(Exception ex)
+    {
+      ex.printStackTrace();
+    }
+  }
+
+  public Ventana_formas() {
+    try
+    {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void jbInit() throws Exception
+  {
+    this.setTitle("Formas");
+    this.addInternalFrameListener(new Ventana_formas_this_internalFrameAdapter(this));
+    this.setClosable(true);
+
+    // ***** Pongo los iconos *****
+    ImageIcon circulo = new ImageIcon("iconos/circulo.gif");
+    ImageIcon linea = new ImageIcon("iconos/linea.gif");
+    ImageIcon rectangulo = new ImageIcon("iconos/rectangulo.gif");
+    ImageIcon arco = new ImageIcon("iconos/arco.gif");
+    ImageIcon trazolibre = new ImageIcon("iconos/trazo_libre.gif");
+    ImageIcon texto = new ImageIcon("iconos/texto.gif");
+    ImageIcon rectanguloredondeado = new ImageIcon("iconos/rectangulo_redondeado.gif");
+    ImageIcon punto = new ImageIcon("iconos/punto.gif");
+    ImageIcon estrella = new ImageIcon("iconos/estrella.gif");
+    ImageIcon cpc = new ImageIcon("iconos/cpc.gif");
+    ImageIcon goma = new ImageIcon("iconos/goma.gif");
+    ImageIcon cpc2 = new ImageIcon("iconos/cpc2.gif");
+    tbBotonElipse.setIcon(circulo);
+    tbBotonLinea.setIcon(linea);
+    tbBotonRectangulo.setIcon(rectangulo);
+    tbBotonArco.setIcon(arco);
+    tbBotonTrazoLibre.setIcon(trazolibre);
+    tbBotonTexto.setIcon(texto);
+    tbBotonRectanguloRedondeado.setIcon(rectanguloredondeado);
+    tbBotonPunto.setIcon(punto);
+    tbBotonEstrella.setIcon(estrella);
+    tbBotonCPC.setIcon(cpc);
+    tbBotonGoma.setIcon(goma);
+    tbBotonCPC2.setIcon(cpc2);
+    // ****************************
+
+    // ***** Agrupo los botones *****
+    grupo.add(tbBotonPunto);
+    grupo.add(tbBotonLinea);
+    grupo.add(tbBotonRectangulo);
+    grupo.add(tbBotonElipse);
+    grupo.add(tbBotonRectanguloRedondeado);
+    grupo.add(tbBotonArco);
+    grupo.add(tbBotonCPC);
+    grupo.add(tbBotonTexto);
+    grupo.add(tbBotonEstrella);
+    grupo.add(tbBotonTrazoLibre);
+    grupo.add(tbBotonGoma);
+    grupo.add(tbBotonCPC2);
+    // ******************************
+
+    tbBotonGoma.setToolTipText("Goma de borrar");
+    tbBotonGoma.addMouseListener(new Ventana_atributos_dibujo_tbBotonGoma_mouseAdapter(this));
+    tbBotonCPC2.addMouseListener(new Ventana_formas_tbBotonCPC2_mouseAdapter(this));
+    tbBotonCPC2.setToolTipText("Curva con 2 puntos de control");
+
+    // ***********************************************************
+
+
+    jPanelContenedor.setLayout(borderLayout9);
+    this.getContentPane().setLayout(gridLayout1);
+    jPanelFormas.setLayout(gridLayout2);
+    jPanelFormas.setBorder(BorderFactory.createLoweredBevelBorder());
+    jPanelFormasAtributos.setLayout(borderLayout8);
+    jPanelFormasAtributos.setBorder(BorderFactory.createEtchedBorder());
+    jPanelFormasAtributos.setMaximumSize(new Dimension(100, 100));
+    jPanelFormasAtributos.setMinimumSize(new Dimension(142, 153));
+    jPanelFormasAtributos.setPreferredSize(new Dimension(100, 100));
+    tbBotonElipse.setToolTipText("Elipse");
+    tbBotonElipse.addMouseListener(new Ventana_atributos_dibujo_tbBotonElipse_mouseAdapter(this));
+    tbBotonRectangulo.setToolTipText("Rectángulo");
+    tbBotonRectangulo.addMouseListener(new Ventana_atributos_dibujo_tbBotonRectangulo_mouseAdapter(this));
+    tbBotonLinea.setToolTipText("Línea recta");
+    tbBotonLinea.addMouseListener(new Ventana_atributos_dibujo_tbBotonLinea_mouseAdapter(this));
+    tbBotonPunto.setToolTipText("Punto");
+    tbBotonPunto.addMouseListener(new Ventana_atributos_dibujo_tbBotonPunto_mouseAdapter(this));
+    tbBotonRectanguloRedondeado.setToolTipText("Rectángulo redondeado");
+    tbBotonArco.setToolTipText("Arco");
+    tbBotonCPC.setToolTipText("Curva con 1 punto de control");
+    tbBotonTexto.setToolTipText("Texto");
+    tbBotonEstrella.setToolTipText("Estrella");
+    jPanelFormasAtributos.add(jPanelContenedor, BorderLayout.NORTH);
+    jPanelContenedor.add(jPanelFormas, BorderLayout.NORTH);
+    jPanelFormas.add(tbBotonPunto, null);
+    jPanelFormas.add(tbBotonLinea, null);
+    jPanelFormas.add(tbBotonRectangulo, null);
+    jPanelFormas.add(tbBotonRectanguloRedondeado, null);
+    jPanelFormas.add(tbBotonElipse, null);
+    jPanelFormas.add(tbBotonArco, null);
+    jPanelFormas.add(tbBotonCPC, null);
+    jPanelFormas.add(tbBotonTexto, null);
+    jPanelFormas.add(tbBotonEstrella, null);
+    jPanelFormas.add(tbBotonTrazoLibre, null);
+    jPanelFormas.add(tbBotonGoma, null);
+    jPanelFormas.add(tbBotonCPC2, null);
+    this.getContentPane().add(jPanelFormasAtributos, null);
+    tbBotonRectanguloRedondeado.addMouseListener(new Ventana_atributos_dibujo_tbBotonRectanguloRedondeado_mouseAdapter(this));
+    tbBotonArco.addMouseListener(new Ventana_atributos_dibujo_tbBotonArco_mouseAdapter(this));
+    tbBotonCPC.addMouseListener(new Ventana_atributos_dibujo_tbBotonCPC_mouseAdapter(this));
+    tbBotonTexto.addMouseListener(new Ventana_atributos_dibujo_tbBotonTexto_mouseAdapter(this));
+    tbBotonEstrella.addMouseListener(new Ventana_atributos_dibujo_tbBotonEstrella_mouseAdapter(this));
+    tbBotonTrazoLibre.setToolTipText("Trazo libre");
+    tbBotonTrazoLibre.addMouseListener(new Ventana_atributos_dibujo_tbBotonTrazoLibre_mouseAdapter(this));
+    tbBotonArco.setActionCommand("");
+  }
+
+
+  void bForma1_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(1);
+  }
+
+  void bForma2_mouseClicked(MouseEvent e) {
+    creador.setTipoObjeto(2);
+  }
+
+  void bForma3_mouseClicked(MouseEvent e) {
+    creador.setTipoObjeto(3);
+  }
+
+  void bForma4_mouseClicked(MouseEvent e) {
+    creador.setTipoObjeto(4);
+  }
+
+  JToggleButton tbBotonCPC = new JToggleButton();
+  JToggleButton tbBotonTexto = new JToggleButton();
+  JToggleButton tbBotonEstrella = new JToggleButton();
+  JToggleButton tbBotonArco = new JToggleButton();
+  JToggleButton tbBotonRectanguloRedondeado = new JToggleButton();
+  JToggleButton tbBotonElipse = new JToggleButton();
+  JToggleButton tbBotonRectangulo = new JToggleButton();
+  JToggleButton tbBotonLinea = new JToggleButton();
+  JToggleButton tbBotonPunto = new JToggleButton();
+  JToggleButton tbBotonTrazoLibre = new JToggleButton();
+  TitledBorder titledBorder1;
+  TitledBorder titledBorder2;
+  JToggleButton tbBotonGoma = new JToggleButton();
+  JToggleButton tbBotonCPC2 = new JToggleButton();
+
+  void tbBotonPunto_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(1);
+  }
+
+  void tbBotonLinea_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(2);
+  }
+
+  void tbBotonRectangulo_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(3);
+  }
+
+  void tbBotonRectanguloRedondeado_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(4);
+  }
+
+  void tbBotonElipse_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(5);
+  }
+
+  void tbBotonArco_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(6);
+  }
+
+  void tbBotonCPC_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(7);
+  }
+
+  void tbBotonTexto_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(8);
+  }
+
+  void tbBotonEstrella_mouseClicked(MouseEvent e)
+  {
+    // La estrella es una forma añadida por mi :D
+    creador.setTipoObjeto(9);
+  }
+
+  void tbBotonTrazoLibre_mouseClicked(MouseEvent e)
+  {
+    creador.setTipoObjeto(10);
+  }
+
+  void tbBotonGoma_mouseClicked(MouseEvent e)
+  {
+    // La goma de borrar es una forma añadida por mi :D
+    creador.setTipoObjeto(11);
+  }
+
+  void tbBotonCPC2_mouseClicked(MouseEvent e)
+  {
+    // La curva con 2 puntos de control es una forma optativa
+    creador.setTipoObjeto(12);
+  }
+
+  void this_internalFrameActivated(InternalFrameEvent e) {
+    creador.jMenuGuardar.setEnabled(false);
+    creador.jMenuImprimir.setEnabled(false);
+    creador.jMenuHistograma.setEnabled(false);
+    creador.jMenuDeshacer.setEnabled(false);
+    creador.setUltimaVentanaImagenSeleccionada(null);
+  }
+
+}
+
+class Ventana_atributos_dibujo_tbBotonPunto_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonPunto_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonPunto_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonLinea_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonLinea_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonLinea_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonRectangulo_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonRectangulo_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonRectangulo_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonElipse_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonElipse_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonElipse_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonRectanguloRedondeado_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonRectanguloRedondeado_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonRectanguloRedondeado_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonArco_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonArco_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonArco_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonCPC_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonCPC_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonCPC_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonTexto_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonTexto_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonTexto_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonEstrella_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonEstrella_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonEstrella_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonTrazoLibre_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonTrazoLibre_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonTrazoLibre_mouseClicked(e);
+  }
+}
+
+class Ventana_atributos_dibujo_tTexto_focusAdapter extends java.awt.event.FocusAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tTexto_focusAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+}
+
+class Ventana_atributos_dibujo_tbBotonGoma_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_atributos_dibujo_tbBotonGoma_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonGoma_mouseClicked(e);
+  }
+}
+
+class Ventana_formas_tbBotonCPC2_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_formas_tbBotonCPC2_mouseAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbBotonCPC2_mouseClicked(e);
+  }
+}
+
+class Ventana_formas_this_internalFrameAdapter extends javax.swing.event.InternalFrameAdapter {
+  Ventana_formas adaptee;
+
+  Ventana_formas_this_internalFrameAdapter(Ventana_formas adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void internalFrameActivated(InternalFrameEvent e) {
+    adaptee.this_internalFrameActivated(e);
+  }
+}

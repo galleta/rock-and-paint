@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+  <!--JBuilder Library Definition File-->
+  <fullname>Multimedia</fullname>
+  <class>
+    <path>[Bibliotecas_multimedia/mediaplayer.jar]</path>
+    <path>[Bibliotecas_multimedia/multiplayer.jar]</path>
+    <path>[Bibliotecas_multimedia/customizer.jar]</path>
+    <path>[Bibliotecas_multimedia/sound.jar]</path>
+    <path>[Bibliotecas_multimedia/jmf.jar]</path>
+  </class>
+  <lastmodsaved>1261397659247</lastmodsaved>
+</library>

@@ -1,0 +1,160 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import javax.swing.event.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class ventana_histograma extends JInternalFrame {
+
+  BufferedImage ima;
+  Ventana_imagen creador;
+  private int[] datos_histograma = new int[256];
+  private int veces_que_se_ha_dibujado_el_histograma = 0;
+
+  BorderLayout borderLayout1 = new BorderLayout();
+  Lienzo_no_dibujar jPanelHistograma;
+
+  public ventana_histograma(Ventana_imagen i) {
+    try {
+      creador = i;
+      ima = creador.jPanelDibujar.getImagen();
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función calcula el máximo de un array de enteros.</p>
+   * @param v Array para calcular el máximo
+   * @return Máximo del array
+   */
+  int maximo(int[] v)
+  {
+    int resultado = v[0];
+    for(int i = 0; i < v.length; i++)
+    {
+      if (v[i] > resultado)
+      {
+        resultado = v[i];
+      }
+    }
+    return resultado;
+  }
+
+
+ public void paint(Graphics g)
+  {
+      super.paint(g);
+      Graphics2D g_histograma = (Graphics2D) g;
+      g_histograma = (Graphics2D) jPanelHistograma.getImagen().getGraphics();
+      if( veces_que_se_ha_dibujado_el_histograma == 0 )
+        dibujar(g_histograma);
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función dibuja el histograma de la imagen.</p>
+   * @param g Objeto Graphics2D para dibujar
+   */
+  void dibujar(Graphics2D g)
+  {
+    int max = maximo(datos_histograma);
+    for(int i = 0; i < 256; i++)
+    {
+      if( datos_histograma[i] > 0 )
+      {
+        Point inicio = new Point(i + 22, 0),
+            p_final = new Point(i + 22, (datos_histograma[i] * 256) / max);
+        Shape linea = new Line2D.Float(inicio, p_final);
+        g.setPaint(Color.BLACK);
+        g.draw(linea);
+      }
+    }
+
+    BufferedImage imgSource = jPanelHistograma.getImagen();
+
+    AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(180.0), 150,150);
+
+    AffineTransformOp atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+    BufferedImage imgdest = atop.filter( imgSource, null);
+
+    jPanelHistograma.setImagen(imgdest);
+
+    repaint();
+
+    veces_que_se_ha_dibujado_el_histograma++;
+  }
+
+  void jbInit() throws Exception {
+    ImageIcon icono_frame = new ImageIcon("iconos/imagen.gif");
+    this.setFrameIcon(icono_frame);
+    jPanelHistograma = new Lienzo_no_dibujar();
+    this.setTitle("Histograma de: " + creador.getTitle().substring(0, creador.getTitle().length() - 15));
+    this.addInternalFrameListener(new ventana_histograma_this_internalFrameAdapter(this));
+
+    this.setClosable(true);
+    this.getContentPane().setLayout(borderLayout1);
+    jPanelHistograma.setBackground(Color.white);
+    this.getContentPane().add(jPanelHistograma,  BorderLayout.CENTER);
+
+    DataBuffer datos = ima.getRaster().getDataBuffer();
+    int[] datos_imagen = new int[ datos.getSize() ];
+
+    for(int i = 0; i < 256; i++)
+      datos_histograma[i] = 0;
+
+    for(int i = 0; i < datos.getSize(); i++)
+      datos_imagen[i] = datos.getElem(i);
+
+    try
+    {
+      for (int i = 0; i < datos_imagen.length; i++)
+      {
+        if( datos_imagen[i]%256 < 0 )
+          datos_histograma[255]++;
+        else
+          datos_histograma[datos_imagen[i] % 256]++;
+      }
+    }
+    catch(Exception ex)
+    {
+      ex.printStackTrace();
+    }
+
+  }
+
+  void this_internalFrameActivated(InternalFrameEvent e) {
+    creador.creador.jMenuGuardar.setEnabled(false);
+    creador.creador.jMenuImprimir.setEnabled(false);
+    creador.creador.jMenuHistograma.setEnabled(false);
+    creador.creador.jMenuDeshacer.setEnabled(false);
+    creador.creador.jMenuRehacer.setEnabled(false);
+    creador.creador.setUltimaVentanaImagenSeleccionada(null);
+  }
+}
+
+class ventana_histograma_this_internalFrameAdapter extends javax.swing.event.InternalFrameAdapter {
+  ventana_histograma adaptee;
+
+  ventana_histograma_this_internalFrameAdapter(ventana_histograma adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void internalFrameActivated(InternalFrameEvent e) {
+    adaptee.this_internalFrameActivated(e);
+  }
+}

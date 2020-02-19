@@ -1,0 +1,30 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class Ventana_herramientas extends JFrame {
+  BorderLayout borderLayout1 = new BorderLayout();
+
+  public Ventana_herramientas() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  void jbInit() throws Exception {
+    this.getContentPane().setLayout(borderLayout1);
+  }
+}

@@ -1,0 +1,107 @@
+package super_paint;
+
+import java.awt.*;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class texto extends objeto
+{
+
+  public texto(atributos at)
+  {
+    atrib = at;
+  }
+
+  public texto()
+  {
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve el color del texto.</p>
+   * @return Color del texto
+   */
+  public Color getColor()
+  {
+    return atrib.getColorTrazo();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve el tamaño de la fuente del texto.</p>
+   * @return Tamaño de la fuente
+   */
+  public int getTama()
+  {
+    return atrib.getTamaFuente();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve si el texto está en negrita.</p>
+   * @return Verdadero si está en negrita y falso sino
+   */
+  public boolean getNegrita()
+  {
+    return atrib.getNegrita();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve si el texto está en cursiva.</p>
+   * @return Verdadero si está en cursiva y falso sino
+   */
+  public boolean getCursiva()
+  {
+    return atrib.getCursiva();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve si el texto está subrayado.</p>
+   * @return Verdadero si está subrayado y falso sino
+   */
+  public boolean getSubrayado()
+  {
+    return atrib.getSubrayado();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve si el texto está tachado.</p>
+   * @return Verdadero si está tachado y falso sino
+   */
+  public boolean getTachado()
+  {
+    return atrib.getTachado();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve el nombre de la fuente.</p>
+   * @return Nombre de la fuente en la que está el texto.
+   */
+  public String getNombreFuente()
+  {
+    return atrib.getNombreFuente();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve el texto a dibujar.</p>
+   * @return Texto a dibujar
+   */
+  public String getTexto()
+  {
+    return atrib.getTexto();
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve el ppunto donde se dibujará el texto.</p>
+   * @return Punto donde se dibujará el texto.
+   */
+  public Point getPuntoDibujarTexto()
+  {
+    return atrib.getPuntoDibujarTexto();
+  }
+
+}

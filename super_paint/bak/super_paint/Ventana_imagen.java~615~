@@ -1,0 +1,175 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.event.*;
+import javax.swing.event.*;
+
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class Ventana_imagen extends JInternalFrame
+{
+  BorderLayout borderLayout1 = new BorderLayout();
+  Lienzo jPanelDibujar;
+  Interfaz creador = null;
+  BorderLayout borderLayout2 = new BorderLayout();
+  JScrollPane jScrollPane1 = new JScrollPane();
+
+  // ***** Variables privadas de la clase *****
+  private String titulo;
+  private int al = 0, an = 0;
+  // ******************************************
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve el alto de la imagen.</p>
+   * @return Alto de la imagen
+   */
+  public int getAlto()
+  {
+    return al;
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función devuelve el ancho de la imagen.</p>
+   * @return Ancho de la imagen
+   */
+  public int getAncho()
+  {
+    return an;
+  }
+
+  public Ventana_imagen(Interfaz inter, String ti, int ancho, int alto, BufferedImage ima) {
+    creador = inter;
+    titulo = ti;
+    al = alto;
+    an = ancho;
+    jPanelDibujar = new Lienzo(this, ima);
+    try {
+      jbInit();
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  void jbInit() throws Exception
+  {
+    this.setResizable(true);
+    this.setClosable(true);
+    this.setTitle(titulo + " - Rock'n'Paint");
+    this.addMouseListener(new Ventana_imagen_this_mouseAdapter(this));
+    this.addMouseMotionListener(new Ventana_imagen_this_mouseMotionAdapter(this));
+    this.getContentPane().setLayout(borderLayout2);
+    this.getContentPane().setBackground(SystemColor.control);
+    this.addKeyListener(new Ventana_imagen_this_keyAdapter(this));
+    this.addInternalFrameListener(new Ventana_imagen_this_internalFrameAdapter(this));
+    jPanelDibujar.addMouseListener(new Ventana_imagen_jPanelDibujar_mouseAdapter(this));
+    jPanelDibujar.setLayout(null);
+
+    jPanelDibujar.addComponentListener(new Ventana_imagen_jPanelDibujar_componentAdapter(this));
+    this.getContentPane().add(jScrollPane1, BorderLayout.CENTER);
+    jScrollPane1.setViewportView(jPanelDibujar);
+
+    creador.jMenuGuardar.setEnabled(true);
+    creador.jMenuImprimir.setEnabled(true);
+    creador.jMenuHistograma.setEnabled(true);
+  }
+
+
+  class Ventana_imagen_this_mouseAdapter
+      extends java.awt.event.MouseAdapter {
+    Ventana_imagen adaptee;
+
+    Ventana_imagen_this_mouseAdapter(Ventana_imagen adaptee) {
+      this.adaptee = adaptee;
+    }
+
+  }
+
+  class Ventana_imagen_this_mouseMotionAdapter
+      extends java.awt.event.MouseMotionAdapter {
+    Ventana_imagen adaptee;
+
+    Ventana_imagen_this_mouseMotionAdapter(Ventana_imagen adaptee) {
+      this.adaptee = adaptee;
+    }
+
+  }
+
+  void this_internalFrameActivated(InternalFrameEvent e)
+  {
+    creador.setUltimaVentanaImagenSeleccionada( this );
+    creador.jMenuGuardar.setEnabled(true);
+    creador.jMenuImprimir.setEnabled(true);
+    creador.jMenuHistograma.setEnabled(true);
+  }
+
+  void this_internalFrameClosed(InternalFrameEvent e) {
+    creador.jMenuGuardar.setEnabled(false);
+    creador.jMenuImprimir.setEnabled(false);
+    creador.jMenuHistograma.setEnabled(false);
+    creador.ultima_imagen_seleccionada = null;
+  }
+
+  void this_keyPressed(KeyEvent e)
+  {
+    switch(e.getKeyCode())
+    {
+        case KeyEvent.VK_ENTER:
+          System.out.println("aaaaaa");
+          break;
+    }
+  }
+
+}
+
+class Ventana_imagen_jPanelDibujar_mouseAdapter extends java.awt.event.MouseAdapter {
+  Ventana_imagen adaptee;
+
+  Ventana_imagen_jPanelDibujar_mouseAdapter(Ventana_imagen adaptee) {
+    this.adaptee = adaptee;
+  }
+
+}
+
+class Ventana_imagen_jPanelDibujar_componentAdapter extends java.awt.event.ComponentAdapter {
+  Ventana_imagen adaptee;
+
+  Ventana_imagen_jPanelDibujar_componentAdapter(Ventana_imagen adaptee) {
+    this.adaptee = adaptee;
+  }
+}
+
+class Ventana_imagen_this_internalFrameAdapter extends javax.swing.event.InternalFrameAdapter {
+  Ventana_imagen adaptee;
+
+  Ventana_imagen_this_internalFrameAdapter(Ventana_imagen adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void internalFrameActivated(InternalFrameEvent e) {
+    adaptee.this_internalFrameActivated(e);
+  }
+  public void internalFrameClosed(InternalFrameEvent e) {
+    adaptee.this_internalFrameClosed(e);
+  }
+}
+
+class Ventana_imagen_this_keyAdapter extends java.awt.event.KeyAdapter {
+  Ventana_imagen adaptee;
+
+  Ventana_imagen_this_keyAdapter(Ventana_imagen adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void keyPressed(KeyEvent e) {
+    adaptee.this_keyPressed(e);
+  }
+}

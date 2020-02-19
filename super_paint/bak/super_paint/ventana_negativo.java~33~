@@ -1,0 +1,220 @@
+package super_paint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.event.*;
+
+import java.awt.image.ShortLookupTable;
+import java.awt.image.LookupOp;
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class ventana_negativo extends JInternalFrame {
+  private BufferedImage imgdest;
+
+  Ventana_imagen v;
+
+  private short [] invertido = new short[256], identidad = new short[256];
+
+  BorderLayout borderLayout1 = new BorderLayout();
+  Lienzo jPanel1;
+  JPanel jPanel2 = new JPanel();
+  JCheckBox cbNegativoRojo = new JCheckBox();
+  JCheckBox cbNegativoAzul = new JCheckBox();
+  JCheckBox cbNegativoVerde = new JCheckBox();
+  JPanel jPanel3 = new JPanel();
+  BorderLayout borderLayout2 = new BorderLayout();
+  JPanel jPanel4 = new JPanel();
+  JButton bAceptar = new JButton();
+
+  public ventana_negativo(Ventana_imagen ventana)
+  {
+    try
+    {
+      v = ventana;
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  void jbInit() throws Exception
+  {
+    jPanel1 = new Lienzo(v, v.jPanelDibujar.getImagen());
+
+    for (int j = 0; j < 256; j++)
+    {
+      invertido[j] = (short) (256 - j - 1); // Negativo
+      identidad[j] = (short)j; // identidad
+    }
+
+
+    this.setClosable(true);
+    this.setIconifiable(true);
+    this.setMaximizable(true);
+
+    this.setTitle("Efecto negativo a: " + v.getTitle().substring(0, v.getTitle().length()-15));
+
+    this.getContentPane().setLayout(borderLayout1);
+    cbNegativoRojo.setText("Invertir Rojo");
+    cbNegativoRojo.addActionListener(new ventana_negativo_cbNegativoRojo_actionAdapter(this));
+    cbNegativoRojo.addMouseListener(new ventana_negativo_cbNegativoRojo_mouseAdapter(this));
+    cbNegativoAzul.setText("Invertir Azul");
+    cbNegativoAzul.addActionListener(new ventana_negativo_cbNegativoAzul_actionAdapter(this));
+    cbNegativoVerde.setText("Invertir Verde");
+    cbNegativoVerde.addActionListener(new ventana_negativo_cbNegativoVerde_actionAdapter(this));
+    jPanel2.setBorder(BorderFactory.createEtchedBorder());
+    jPanel2.setMaximumSize(new Dimension(100, 100));
+    jPanel2.setMinimumSize(new Dimension(100, 100));
+    jPanel2.setPreferredSize(new Dimension(100, 100));
+    jPanel2.setLayout(borderLayout2);
+    jPanel3.setBorder(BorderFactory.createEtchedBorder());
+    jPanel3.setDebugGraphicsOptions(0);
+    jPanel3.setMaximumSize(new Dimension(110, 110));
+    jPanel3.setMinimumSize(new Dimension(110, 110));
+    jPanel3.setOpaque(true);
+    jPanel3.setPreferredSize(new Dimension(110, 100));
+    jPanel4.setBorder(BorderFactory.createEtchedBorder());
+    bAceptar.setText("Aceptar");
+    bAceptar.addActionListener(new ventana_negativo_bAceptar_actionAdapter(this));
+    this.getContentPane().add(jPanel1,  BorderLayout.CENTER);
+    this.getContentPane().add(jPanel2,  BorderLayout.EAST);
+    jPanel2.add(jPanel3, BorderLayout.NORTH);
+    jPanel3.add(cbNegativoRojo, null);
+    jPanel3.add(cbNegativoVerde, null);
+    jPanel3.add(cbNegativoAzul, null);
+    jPanel2.add(jPanel4,  BorderLayout.CENTER);
+    jPanel4.add(bAceptar, null);
+  }
+
+  /**
+   * <p><u>Descripción</u>: Esta función le aplica a un canal de una imagen el efecto negativo.</p>
+   * @param canal Canal para dar el efecto negativo, puede ser: rojo, verde, azul.
+   */
+  void negativo(String canal)
+  {
+    BufferedImage imgSource, img = jPanel1.getImagen();
+
+    if (img.getType() != BufferedImage.TYPE_INT_RGB)
+     {
+         imgSource = new BufferedImage(img.getWidth(),img.getHeight(), BufferedImage.TYPE_INT_RGB);
+         Graphics2D g2d = imgSource.createGraphics();
+         g2d.drawImage(img, 0, 0, null);
+     }
+     else
+       imgSource = img;
+
+       ShortLookupTable invert = null;
+
+     if( canal.compareTo("rojo") == 0 )
+     {
+       short[][] invertir = {invertido, identidad, identidad};
+       invert = new ShortLookupTable(0, invertir);
+     }
+     else
+       if( canal.compareTo("verde") == 0 )
+       {
+         short[][] invertir = {identidad, invertido, identidad};
+         invert = new ShortLookupTable(0, invertir);
+       }
+       else
+         if( canal.compareTo("azul") == 0 )
+         {
+           short[][] invertir = {identidad, identidad, invertido};
+           invert = new ShortLookupTable(0, invertir);
+         }
+
+     LookupOp lop = new LookupOp(invert, null);
+     imgdest = lop.filter( imgSource , null);
+
+     jPanel1.setImagen( imgdest );
+
+     jPanel1.repaint();
+  }
+
+
+  void cbNegativoRojo_actionPerformed(ActionEvent e)
+  {
+    negativo("rojo");
+  }
+
+  void cbNegativoVerde_actionPerformed(ActionEvent e)
+  {
+    negativo("verde");
+  }
+
+  void cbNegativoAzul_actionPerformed(ActionEvent e)
+  {
+    negativo("azul");
+  }
+
+  void bAceptar_actionPerformed(ActionEvent e)
+  {
+    v.jPanelDibujar.setImagen_Operacion( imgdest );
+
+    dispose();
+  }
+}
+
+
+
+class ventana_negativo_cbNegativoRojo_mouseAdapter extends java.awt.event.MouseAdapter {
+  ventana_negativo adaptee;
+
+  ventana_negativo_cbNegativoRojo_mouseAdapter(ventana_negativo adaptee) {
+    this.adaptee = adaptee;
+  }
+}
+
+class ventana_negativo_cbNegativoRojo_actionAdapter implements java.awt.event.ActionListener {
+  ventana_negativo adaptee;
+
+  ventana_negativo_cbNegativoRojo_actionAdapter(ventana_negativo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cbNegativoRojo_actionPerformed(e);
+  }
+}
+
+class ventana_negativo_cbNegativoVerde_actionAdapter implements java.awt.event.ActionListener {
+  ventana_negativo adaptee;
+
+  ventana_negativo_cbNegativoVerde_actionAdapter(ventana_negativo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cbNegativoVerde_actionPerformed(e);
+  }
+}
+
+class ventana_negativo_cbNegativoAzul_actionAdapter implements java.awt.event.ActionListener {
+  ventana_negativo adaptee;
+
+  ventana_negativo_cbNegativoAzul_actionAdapter(ventana_negativo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cbNegativoAzul_actionPerformed(e);
+  }
+}
+
+class ventana_negativo_bAceptar_actionAdapter implements java.awt.event.ActionListener {
+  ventana_negativo adaptee;
+
+  ventana_negativo_bAceptar_actionAdapter(ventana_negativo adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.bAceptar_actionPerformed(e);
+  }
+}

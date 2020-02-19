@@ -1,0 +1,86 @@
+package super_paint;
+
+import java.awt.event.*;
+import java.awt.*;
+
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class texto_actionAdapter implements java.awt.event.KeyListener
+{
+  private Ventana_imagen v_imagen;
+  private Point punto;
+  private int tama_fuente;
+
+  public texto_actionAdapter()
+  {
+  }
+
+  public texto_actionAdapter(Lienzo l, Point p, int t)
+  {
+    v_imagen = l.creador;
+    punto = p;
+    tama_fuente = t;
+  }
+
+  /**
+   * actionPerformed
+   *
+   * @param e ActionEvent
+   */
+  public void actionPerformed(ActionEvent e)
+  {
+  }
+
+  /**
+   * keyPressed
+   *
+   * @param e KeyEvent
+   */
+  public void keyPressed(KeyEvent e)
+  {
+    switch(e.getKeyCode())
+    {
+      case KeyEvent.VK_ENTER :
+         //punto.y += v_imagen.jPanelDibujar.caja_texto.getHeight() - ( (tama_fuente * 5)/70 );
+         //punto.y += v_imagen.jPanelDibujar.caja_texto.getHeight() - ( (tama_fuente * 5)/70 );
+         atributos atributos_texto = new atributos(null, 0, v_imagen.creador.getTipoRelleno(), v_imagen.creador.getColorTrazo(),
+                                                   null, v_imagen.creador.getTransparencia(), v_imagen.creador.getTamaFuente(),
+                                                   1, v_imagen.creador.getFuente(), v_imagen.jPanelDibujar.caja_texto.getText(),
+                                                   v_imagen.creador.getDegradado1(), v_imagen.creador.getDegradado2(),
+                                                   0, v_imagen.creador.negrita(), v_imagen.creador.cursiva(),
+                                                   v_imagen.creador.subrayado(), v_imagen.creador.tachado(), punto);
+         texto textico = new texto(atributos_texto);
+         v_imagen.jPanelDibujar.dibujar(textico);
+         v_imagen.jPanelDibujar.buffer.add(textico);
+         v_imagen.jPanelDibujar.remove( v_imagen.jPanelDibujar.caja_texto );
+         break;
+    }
+  }
+
+  /**
+   * keyReleased
+   *
+   * @param e KeyEvent
+   */
+  public void keyReleased(KeyEvent e)
+  {
+  }
+
+  /**
+   * keyTyped
+   *
+   * @param e KeyEvent
+   */
+  public void keyTyped(KeyEvent e)
+  {
+  }
+
+}

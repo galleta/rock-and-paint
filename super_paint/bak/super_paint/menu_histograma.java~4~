@@ -1,0 +1,70 @@
+package super_paint;
+
+import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.*;
+
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class menu_histograma implements java.awt.event.ActionListener
+{
+
+  Interfaz creador;
+
+  public menu_histograma(Interfaz i)
+  {
+    creador = i;
+  }
+
+  /**
+   * actionPerformed
+   *
+   * @param e ActionEvent
+   */
+  public void actionPerformed(ActionEvent e)
+  {
+
+    if( creador.escritorio.getSelectedFrame() instanceof Ventana_imagen )
+    {
+      // ***** Creo y muestro la ventana del histograma *****
+      ventana_histograma his = new ventana_histograma( ((Ventana_imagen)creador.escritorio.getSelectedFrame()).jPanelDibujar.getImagen() );
+      his.setSize(300, 300);
+      // ***** Centro la ventana *****
+      Dimension screenSize2 = Toolkit.getDefaultToolkit().getScreenSize();
+      Dimension frameSize2 = his.getSize();
+      if (frameSize2.height > screenSize2.height)
+        frameSize2.height = screenSize2.height;
+      if (frameSize2.width > screenSize2.width)
+        frameSize2.width = screenSize2.width;
+      his.setLocation( (screenSize2.width - frameSize2.width) / 2,
+                      (screenSize2.height - frameSize2.height) / 2);
+
+      his.setVisible(true);
+
+      creador.escritorio.remove(creador.labelFondo);
+
+      creador.escritorio.add(his);
+
+      his.toFront(); // pongo la imagen al frente
+      try {
+        his.setSelected(true);
+      }
+      catch (Exception ex) {
+      }
+
+      creador.escritorio.add(creador.labelFondo,
+                             creador.escritorio.DEFAULT_LAYER);
+    }
+
+
+  }
+
+}

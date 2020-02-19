@@ -1,0 +1,44 @@
+package super_paint;
+
+import java.util.*;
+import java.text.SimpleDateFormat;
+
+
+/**
+ * <p>Título: Práctica de Sistemas Multimedia</p>
+ * <p>Descripción: Práctica de Sistemas Multimedia</p>
+ * <p>Copyright: Copyright (c) 2009</p>
+ * <p>Empresa: Piratas Sin Fronteras S.A.</p>
+ * @author Francisco Jesús Delgado Almirón
+ * @version 1.0
+ */
+
+public class reloj_fecha extends Thread
+{
+  private Interfaz creador;
+  private Calendar calendarioAhora = Calendar.getInstance();
+  private Date fecha = calendarioAhora.getTime();
+  private SimpleDateFormat formatoFecha = new SimpleDateFormat("hh:mm:ss - dd/MM/yyyy");
+
+  public reloj_fecha(Interfaz i)
+  {
+    creador = i;
+  }
+
+  public void run()
+  {
+    calendarioAhora = Calendar.getInstance();
+    fecha = calendarioAhora.getTime();
+    formatoFecha = new SimpleDateFormat("hh:mm:ss - dd/MM/yyyy");
+    creador.lFecha.setText(formatoFecha.format(fecha)); // muestro la hora y la fecha
+    try
+    {
+      this.sleep(1000);
+    }
+    catch (InterruptedException ex)
+    {
+    }
+    //run();
+  }
+
+}
