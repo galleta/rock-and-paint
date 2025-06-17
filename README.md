@@ -1,7 +1,10 @@
-<h2>Este proyecto fue una práctica de la asignatura "Sistemas Multimedia"</h2>
+![Java](https://img.shields.io/badge/Lenguaje-Java-blue?logo=java)
 
-El proyecto fue realizado en Java con JBuilder.<br>
-Consistía en un "Photoshop" capaz de editar fotografías, reproducir música y vídeo.
+# Rock and paint - Editor de imágenes programado en Java
+
+Este proyecto consiste en un "Photoshop" capaz de editar fotografías, reproducir música y vídeo. Fue una práctica de la asignatura "Sistemas Multimedia".
+
+El proyecto fue realizado en Java con *JBuilder*.
 
 <p align="center">
   <img border='0' src = 'https://github.com/galleta/rock-and-paint/blob/master/capturas/captura%2001.png' alt="imagen 01" />
