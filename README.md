@@ -1,4 +1,5 @@
 ![Java](https://img.shields.io/badge/Lenguaje-Java-blue?logo=java)
+![JBuilder](https://img.shields.io/badge/IDE-JBuilder-lightgrey?logo=oracle)
 
 # Rock and paint - Editor de imágenes programado en Java
 
